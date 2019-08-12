@@ -1,0 +1,164 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "b32eb3ccb4e8a48ee254bc7bed724445",
+    "entities": [
+      {
+        "tableName": "word",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `jp` TEXT NOT NULL, `cn` TEXT NOT NULL, `kana` TEXT NOT NULL, `rei` TEXT NOT NULL, `rei_zh` TEXT NOT NULL, `kind` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "jp",
+            "columnName": "jp",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cn",
+            "columnName": "cn",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "kana",
+            "columnName": "kana",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rei",
+            "columnName": "rei",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "reiZh",
+            "columnName": "rei_zh",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "kind",
+            "columnName": "kind",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "word_state",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `word_id` INTEGER NOT NULL, `fav` INTEGER NOT NULL, `visible` INTEGER NOT NULL, FOREIGN KEY(`word_id`) REFERENCES `word`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "wordID",
+            "columnName": "word_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fav",
+            "columnName": "fav",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "visible",
+            "columnName": "visible",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "word",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "word_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "numeral",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `jp` TEXT NOT NULL, `cn` TEXT NOT NULL, `kana` TEXT NOT NULL, `kind` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "jp",
+            "columnName": "jp",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cn",
+            "columnName": "cn",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "kana",
+            "columnName": "kana",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "kind",
+            "columnName": "kind",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b32eb3ccb4e8a48ee254bc7bed724445')"
+    ]
+  }
+}
