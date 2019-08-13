@@ -2,14 +2,11 @@ package com.mitsuki.jlpt.app
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.AssetManager
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteDatabase.OPEN_READONLY
 import android.os.Environment
 import android.util.Log
-import com.mitsuki.jlpt.db.DataReference
 import com.mitsuki.jlpt.entity.Word
-import java.io.File
 
 
 object TempUtils {
@@ -39,8 +36,5 @@ object TempUtils {
             list.add(w)
         }
         Log.e("saf", "数量" + list.size.toString())
-
-        DataReference.wordDao().insert(list)
-        DataReference.wordDao().queryRepos()
     }
 }
