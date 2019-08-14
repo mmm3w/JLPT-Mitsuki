@@ -18,6 +18,9 @@ import org.kodein.di.android.retainedKodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
+import androidx.recyclerview.widget.ItemTouchHelper
+import com.mitsuki.jlpt.ui.widget.SwipeDeleteEvent
+
 
 class MainActivity : AppCompatActivity(), KodeinAware {
 
@@ -27,7 +30,7 @@ class MainActivity : AppCompatActivity(), KodeinAware {
         extend(parentKodein, copy = Copy.All)
         bind<MainViewModel>() with singleton {
             ViewModelProviders.of(this@MainActivity, MainViewModelFactory(db = instance()))
-                    .get(MainViewModel::class.java)
+                .get(MainViewModel::class.java)
         }
         bind<WordAdapter>() with singleton { WordAdapter() }
     }
@@ -43,6 +46,8 @@ class MainActivity : AppCompatActivity(), KodeinAware {
     }
 
     private fun initRecyclerView() {
+        val itemTouchHelper = ItemTouchHelper(SwipeDeleteEvent())
+        itemTouchHelper.attachToRecyclerView(wordList)
         wordList.layoutManager = LinearLayoutManager(this)
         wordList.adapter = mAdapter
         viewModel.allWord.observe(this, Observer { mAdapter.submitList(it) })
