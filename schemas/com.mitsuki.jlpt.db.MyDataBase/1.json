@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b32eb3ccb4e8a48ee254bc7bed724445",
+    "identityHash": "107b20829d7ef79162d177856adb9da3",
     "entities": [
       {
         "tableName": "word",
@@ -62,17 +62,11 @@
       },
       {
         "tableName": "word_state",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `word_id` INTEGER NOT NULL, `fav` INTEGER NOT NULL, `visible` INTEGER NOT NULL, FOREIGN KEY(`word_id`) REFERENCES `word`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`sid` INTEGER NOT NULL, `fav` INTEGER NOT NULL, `visible` INTEGER NOT NULL, PRIMARY KEY(`sid`))",
         "fields": [
           {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "wordID",
-            "columnName": "word_id",
+            "fieldPath": "sid",
+            "columnName": "sid",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -91,24 +85,12 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "sid"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
-        "foreignKeys": [
-          {
-            "table": "word",
-            "onDelete": "NO ACTION",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "word_id"
-            ],
-            "referencedColumns": [
-              "id"
-            ]
-          }
-        ]
+        "foreignKeys": []
       },
       {
         "tableName": "numeral",
@@ -158,7 +140,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b32eb3ccb4e8a48ee254bc7bed724445')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '107b20829d7ef79162d177856adb9da3')"
     ]
   }
 }

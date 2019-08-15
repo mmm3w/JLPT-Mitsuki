@@ -8,6 +8,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.mitsuki.jlpt.R
+import com.mitsuki.jlpt.entity.Word
+import io.reactivex.subjects.PublishSubject
 import kotlin.math.abs
 
 
@@ -15,6 +17,9 @@ class SwipeDeleteEvent : ItemTouchHelper.Callback() {
 
     //    val path = Path()
     private val maxRadius = 24f
+
+    val onSwipe: PublishSubject<Int> = PublishSubject.create()
+
 
     override fun isItemViewSwipeEnabled() = true
 
@@ -28,7 +33,7 @@ class SwipeDeleteEvent : ItemTouchHelper.Callback() {
     ) = false
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
+        onSwipe.onNext(viewHolder.adapterPosition)
     }
 
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {

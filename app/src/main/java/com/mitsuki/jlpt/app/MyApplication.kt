@@ -2,8 +2,11 @@ package com.mitsuki.jlpt.app
 
 import android.app.Application
 import android.content.Context
+import android.widget.Toast
 import androidx.room.Room
 import com.mitsuki.jlpt.db.MyDataBase
+import io.reactivex.android.plugins.RxAndroidPlugins
+import io.reactivex.plugins.RxJavaPlugins
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.androidCoreModule
@@ -23,7 +26,7 @@ class MyApplication : Application(), KodeinAware {
         //Room
         bind<MyDataBase>() with singleton {
             Room.databaseBuilder(this@MyApplication, MyDataBase::class.java, Constants.DATABASE_FILE)
-                    .build()
+                .build()
         }
 
     }
@@ -31,5 +34,6 @@ class MyApplication : Application(), KodeinAware {
     override fun onCreate() {
         super.onCreate()
         DBImport.importDatabase(this)
+        RxJavaPlugins.setErrorHandler { it.printStackTrace() }
     }
 }
