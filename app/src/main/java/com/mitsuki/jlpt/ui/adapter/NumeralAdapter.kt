@@ -11,19 +11,21 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.mitsuki.jlpt.R
+import com.mitsuki.jlpt.entity.Numeral
 import com.mitsuki.jlpt.entity.Word
+import com.mitsuki.jlpt.entity.WordState
 import io.reactivex.subjects.PublishSubject
 
-class WordAdapter : PagedListAdapter<Word, WordAdapter.MyViewHolder>(diffCallback) {
+class NumeralAdapter : PagedListAdapter<Numeral, NumeralAdapter.MyViewHolder>(diffCallback) {
 
-    val parentSubject: PublishSubject<Word> = PublishSubject.create()
+    val parentSubject: PublishSubject<Numeral> = PublishSubject.create()
 
     companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<Word>() {
-            override fun areItemsTheSame(oldItem: Word, newItem: Word): Boolean =
+        private val diffCallback = object : DiffUtil.ItemCallback<Numeral>() {
+            override fun areItemsTheSame(oldItem: Numeral, newItem: Numeral): Boolean =
                 oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: Word, newItem: Word): Boolean =
+            override fun areContentsTheSame(oldItem: Numeral, newItem: Numeral): Boolean =
                 oldItem == newItem
         }
     }
@@ -33,8 +35,7 @@ class WordAdapter : PagedListAdapter<Word, WordAdapter.MyViewHolder>(diffCallbac
         getItem(position)?.let {
             holder.cnText.text = it.cn
             holder.jpText.text = "${it.jp}(${it.kana})"
-            holder.reiText.text = "${it.rei}\n${it.reiZh}"
-            holder.reiText.visibility = if (TextUtils.isEmpty(it.rei)) View.GONE else View.VISIBLE
+            holder.reiText.visibility = View.GONE
             holder.voiceText.setOnClickListener { _ -> parentSubject.onNext(it) }
         }
     }
@@ -49,8 +50,5 @@ class WordAdapter : PagedListAdapter<Word, WordAdapter.MyViewHolder>(diffCallbac
         val voiceText: ImageView = itemView.findViewById(R.id.text_voice)
     }
 
-    fun getItemForOut(position: Int): Word? {
-        return getItem(position)
-    }
 }
 

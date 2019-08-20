@@ -1,41 +1,55 @@
 package com.mitsuki.jlpt.viewmodel
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.mitsuki.jlpt.db.MyDataBase
 import com.mitsuki.jlpt.entity.Word
 import com.mitsuki.jlpt.entity.WordState
+import com.mitsuki.jlpt.model.MainModel
+import io.reactivex.Flowable
+import io.reactivex.disposables.Disposable
+import io.reactivex.processors.BehaviorProcessor
 
-class MainViewModel(db: MyDataBase) : ViewModel() {
+@SuppressLint("CheckResult")
+class MainViewModel(private val model: MainModel) : ViewModel() {
 
-    val db = db
+    private val dataProcessor: BehaviorProcessor<PagedList<Word>> = BehaviorProcessor.create()
+    private var undoCache: WordState? = null
+    private var disposable: Disposable? = null
 
-    val allWord = LivePagedListBuilder(
-        db.wordDao().queryWordsWithVisible(),
-        PagedList.Config.Builder().setPageSize(10).setEnablePlaceholders(false).setInitialLoadSizeHint(10).build()
-    ).build()
+    fun switchMode(mode: Int) {
+        disposable?.let { it.dispose() }
+        disposable = when (mode) {
+            0 -> model.fetchAllWord().subscribe { dataProcessor.onNext(it) }
+            1 -> model.fetchWordWithN1().subscribe { dataProcessor.onNext(it) }
+            2 -> model.fetchWordWithN2().subscribe { dataProcessor.onNext(it) }
+            3 -> model.fetchWordWithN3().subscribe { dataProcessor.onNext(it) }
+            4 -> model.fetchWordWithN4().subscribe { dataProcessor.onNext(it) }
+            5 -> model.fetchWordWithN5().subscribe { dataProcessor.onNext(it) }
+            -1 -> model.fetchWordWithInvisible().subscribe { dataProcessor.onNext(it) }
+            else -> null
+        }
+    }
 
-    var undoCache: WordState? = null
+    fun observeData(): Flowable<PagedList<Word>> = dataProcessor.hide()
 
     fun hideWord(word: Word?) {
         word?.also {
             val s = WordState(it.id, fav = false, visible = false)
-            db.stateDao().insert(s)
+            model.modifyWordState(s)
             undoCache = s
             undoCache?.visible = true
         }
+
     }
 
     fun undoOperation() {
-        undoCache?.also {
-            db.stateDao().insert(it)
-        }
+        undoCache?.also { model.modifyWordState(it) }
     }
 }
 
-class MainViewModelFactory(private val db: MyDataBase) : ViewModelProvider.Factory {
+class MainViewModelFactory(private val model: MainModel) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-        MainViewModel(db) as T
+        MainViewModel(model) as T
 }
