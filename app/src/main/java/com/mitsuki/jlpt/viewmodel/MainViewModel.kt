@@ -19,7 +19,7 @@ class MainViewModel(private val model: MainModel) : ViewModel() {
     private var disposable: Disposable? = null
 
     fun switchMode(mode: Int) {
-        disposable?.let { it.dispose() }
+        disposable?.dispose()
         disposable = when (mode) {
             0 -> model.fetchAllWord().subscribe { dataProcessor.onNext(it) }
             1 -> model.fetchWordWithN1().subscribe { dataProcessor.onNext(it) }
