@@ -20,7 +20,6 @@ class SwipeDeleteEvent : ItemTouchHelper.Callback() {
 
     val onSwipe: PublishSubject<Int> = PublishSubject.create()
 
-
     override fun isItemViewSwipeEnabled() = true
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) =

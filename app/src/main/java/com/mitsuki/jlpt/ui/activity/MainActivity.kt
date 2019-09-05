@@ -3,6 +3,7 @@ package com.mitsuki.jlpt.ui.activity
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mitsuki.jlpt.R
 import com.mitsuki.jlpt.ui.adapter.WordAdapter
@@ -15,94 +16,74 @@ import org.kodein.di.android.closestKodein
 import org.kodein.di.android.retainedKodein
 import org.kodein.di.generic.instance
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.google.android.material.snackbar.Snackbar
+import com.mitsuki.jlpt.base.BaseActivity
 import com.mitsuki.jlpt.module.mainKodeinModule
 import com.mitsuki.jlpt.ui.widget.SwipeDeleteEvent
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
+import com.uber.autodispose.autoDisposable
 import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 
-class MainActivity : AppCompatActivity(), KodeinAware {
+class MainActivity : BaseActivity<MainViewModel>() {
 
-    private val parentKodein by closestKodein()
+    override val kodeinModule = mainKodeinModule
+    override val viewModel: MainViewModel by instance()
 
-    override val kodein: Kodein by retainedKodein {
-        extend(parentKodein, copy = Copy.All)
-        import(mainKodeinModule)
-    }
-
-    private val viewModel: MainViewModel by instance()
     private val mAdapter: WordAdapter by instance()
+    private val itemTouchHelper: ItemTouchHelper by instance()
+    private val swipeDeleteEvent: SwipeDeleteEvent by instance()
     private var snackBol = false
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    override fun initView(savedInstanceState: Bundle?) = R.layout.activity_main
+    override fun initData(savedInstanceState: Bundle?) {
         initToolbar()
         initRecyclerView()
-
         viewModel.switchMode(-1)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
     }
 
     private fun initToolbar() {
         setSupportActionBar(toolbar)
-        val toggle = ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
-        )
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-
-        //隐藏滚动条
-        navigationView.getChildAt(0)?.let { it.isVerticalScrollBarEnabled = false }
-        navigationView.setNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.nav_all -> viewModel.switchMode(0)
-                R.id.nav_n1 -> viewModel.switchMode(1)
-                R.id.nav_n2 -> viewModel.switchMode(2)
-                R.id.nav_n3 -> viewModel.switchMode(3)
-                R.id.nav_n4 -> viewModel.switchMode(4)
-                R.id.nav_n5 -> viewModel.switchMode(5)
-                R.id.nav_numeral -> viewModel.switchMode(6)
-                R.id.nav_invisible -> viewModel.switchMode(-1)
-            }
-            drawerLayout.closeDrawers()
-            if (it.itemId != R.id.nav_test) {
-                it.isChecked = true
-                title = it.title
-                true
-            } else {
-                false
-            }
-        }
     }
 
     @SuppressLint("CheckResult")
     private fun initRecyclerView() {
-        val callback = SwipeDeleteEvent()
-        val itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(wordList)
         wordList.layoutManager = LinearLayoutManager(this)
         wordList.adapter = mAdapter
 
-        viewModel.observeData().subscribe {
-            mAdapter.submitList(it)
-            showSnackbar()
-        }
+        viewModel.observeData()
+            .autoDisposable(scopeProvider)
+            .subscribe {
+                mAdapter.submitList(it)
+                showSnackbar()
+            }
 
-        callback.onSwipe.observeOn(Schedulers.io())
-                .subscribe {
-                    snackBol = true
-                    viewModel.hideWord(mAdapter.getItemForOut(it))
-                }
+        swipeDeleteEvent.onSwipe.observeOn(Schedulers.io())
+            .autoDisposable(scopeProvider)
+            .subscribe {
+                snackBol = true
+                viewModel.changeWordState(mAdapter.getItemForOut(it))
+            }
     }
 
     private fun showSnackbar() {
         if (!snackBol) return
         snackBol = false
-        Snackbar.make(wordList, "隐藏成功", Snackbar.LENGTH_LONG)
-                .setAction("撤销") {
-                    Completable.fromAction {}.observeOn(Schedulers.io()).subscribe { viewModel.undoOperation() }
-                }
-                .show()
+        Snackbar.make(wordList, "操作成功", Snackbar.LENGTH_LONG)
+            .setAction("撤销") {
+                Completable.fromAction {}
+                    .observeOn(Schedulers.io())
+                    .autoDisposable(scopeProvider)
+                    .subscribe { viewModel.undoOperation() }
+            }
+            .show()
     }
 }

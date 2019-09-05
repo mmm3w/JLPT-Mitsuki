@@ -1,41 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_all"
-            android:checked="true"
-            android:title="全部"
-            android:visible="false" />
-        <item
-            android:id="@+id/nav_n1"
-            android:title="JLPT N1" />
-        <item
-            android:id="@+id/nav_n2"
-            android:title="JLPT N2"
-            android:visible="false" />
-        <item
-            android:id="@+id/nav_n3"
-            android:title="JLPT N3"
-            android:visible="false" />
-        <item
-            android:id="@+id/nav_n4"
-            android:title="JLPT N4"
-            android:visible="false" />
+    <item
+        android:id="@+id/nav_all"
+        android:title="全部"
+        android:visible="false" />
+    <item
+        android:id="@+id/nav_n1"
+        android:title="JLPT N1"
+        android:visible="false"/>
+    <item
+        android:id="@+id/nav_n2"
+        android:title="JLPT N2"
+        android:visible="false" />
+    <item
+        android:id="@+id/nav_n3"
+        android:title="JLPT N3"
+        android:visible="false" />
+    <item
+        android:id="@+id/nav_n4"
+        android:title="JLPT N4"
+        android:visible="false" />
+    <item
+        android:id="@+id/nav_n5"
+        android:title="JLPT N5" />
 
-        <item
-            android:id="@+id/nav_n5"
-            android:title="JLPT N5" />
-
-        <item
-            android:id="@+id/nav_numeral"
-            android:title="数词/量词"
-            android:visible="false" />
-
-        <item
-            android:id="@+id/nav_invisible"
-            android:title="已隐藏" />
-    </group>
-
+    <item
+        android:id="@+id/nav_numeral"
+        android:title="数词/量词"
+        android:visible="false" />
+    <item
+        android:id="@+id/nav_invisible"
+        android:title="已隐藏单词" />
     <item
         android:id="@+id/nav_test"
         android:title="测试"

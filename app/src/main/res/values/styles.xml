@@ -9,6 +9,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="PopupMenuStyle" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:itemBackground">@color/white</item>
+    </style>
 
 
 </resources>
