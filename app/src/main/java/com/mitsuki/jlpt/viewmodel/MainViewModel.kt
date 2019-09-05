@@ -38,7 +38,7 @@ class MainViewModel(private val model: MainModel) : BaseViewModel() {
             3 -> model.fetchWordWithN3().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
             4 -> model.fetchWordWithN4().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
             5 -> model.fetchWordWithN5().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
-            -1 -> model.fetchWordWithInvisible().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
+            7 -> model.fetchWordWithInvisible().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
             else -> null
         }
     }
