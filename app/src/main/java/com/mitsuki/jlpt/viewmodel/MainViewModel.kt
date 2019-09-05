@@ -6,6 +6,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagedList
+import com.mitsuki.jlpt.app.Kind
 import com.mitsuki.jlpt.base.AutoDisposeViewModel
 import com.mitsuki.jlpt.base.BaseViewModel
 import com.mitsuki.jlpt.entity.Word
@@ -32,13 +33,13 @@ class MainViewModel(private val model: MainModel) : BaseViewModel() {
         this.mode = mode
         disposable?.dispose()
         disposable = when (mode) {
-            0 -> model.fetchAllWord().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
-            1 -> model.fetchWordWithN1().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
-            2 -> model.fetchWordWithN2().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
-            3 -> model.fetchWordWithN3().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
-            4 -> model.fetchWordWithN4().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
-            5 -> model.fetchWordWithN5().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
-            7 -> model.fetchWordWithInvisible().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
+            Kind.ALL -> model.fetchAllWord().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
+            Kind.N1 -> model.fetchWordWithN1().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
+            Kind.N2 -> model.fetchWordWithN2().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
+            Kind.N3 -> model.fetchWordWithN3().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
+            Kind.N4 -> model.fetchWordWithN4().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
+            Kind.N5 -> model.fetchWordWithN5().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
+            Kind.INVISIBLE -> model.fetchWordWithInvisible().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
             else -> null
         }
     }
@@ -47,7 +48,7 @@ class MainViewModel(private val model: MainModel) : BaseViewModel() {
 
     fun changeWordState(word: Word?) {
         word?.also {
-            val s = WordState(it.id, fav = false, visible = mode == -1)
+            val s = WordState(it.id, fav = false, visible = mode == Kind.INVISIBLE)
             model.modifyWordState(s)
             undoCache = s
             undoCache?.visible = !s.visible

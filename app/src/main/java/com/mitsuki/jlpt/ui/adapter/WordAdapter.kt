@@ -18,6 +18,8 @@ class WordAdapter : PagedListAdapter<Word, WordAdapter.MyViewHolder>(diffCallbac
 
     val parentSubject: PublishSubject<Word> = PublishSubject.create()
 
+    private var markImgRes = R.drawable.ic_visibility_off_black_24dp
+
     companion object {
         private val diffCallback = object : DiffUtil.ItemCallback<Word>() {
             override fun areItemsTheSame(oldItem: Word, newItem: Word): Boolean =
@@ -36,6 +38,7 @@ class WordAdapter : PagedListAdapter<Word, WordAdapter.MyViewHolder>(diffCallbac
             holder.reiText.text = "${it.rei}\n${it.reiZh}"
             holder.reiText.visibility = if (TextUtils.isEmpty(it.rei)) View.GONE else View.VISIBLE
             holder.voiceText.setOnClickListener { _ -> parentSubject.onNext(it) }
+            holder.markView.setImageResource(markImgRes)
         }
     }
 
@@ -47,10 +50,15 @@ class WordAdapter : PagedListAdapter<Word, WordAdapter.MyViewHolder>(diffCallbac
         val cnText: TextView = itemView.findViewById(R.id.text_cn)
         val reiText: TextView = itemView.findViewById(R.id.text_rei)
         val voiceText: ImageView = itemView.findViewById(R.id.text_voice)
+        val markView :ImageView = itemView.findViewById(R.id.text_mark)
     }
 
     fun getItemForOut(position: Int): Word? {
         return getItem(position)
+    }
+
+    fun setListMode(visible :Boolean){
+        markImgRes = if (visible) R.drawable.ic_visibility_off_black_24dp else R.drawable.ic_visibility_black_24dp
     }
 }
 

@@ -1,39 +1,51 @@
 package com.mitsuki.jlpt.app
 
+object Kind {
+    const val ALL = 0
+    const val N1 = 1
+    const val N2 = 2
+    const val N3 = 3
+    const val N4 = 4
+    const val N5 = 5
+    const val NUMERAL = 6
+    const val INVISIBLE = 7
+    const val MEMORIES = -2
+}
+
 fun getKind(type: Int): KindMode? = when (type) {
-    0 -> object : KindMode {
+    Kind.ALL -> object : KindMode {
         override fun getMode() = type
         override fun getTitle() = "全部单词"
     }
-    1 -> object : KindMode {
+    Kind.N1 -> object : KindMode {
         override fun getMode() = type
         override fun getTitle() = "N1单词"
     }
-    2 -> object : KindMode {
+    Kind.N2 -> object : KindMode {
         override fun getMode() = type
         override fun getTitle() = "N2单词"
     }
-    3 -> object : KindMode {
+    Kind.N3 -> object : KindMode {
         override fun getMode() = type
         override fun getTitle() = "N3单词"
     }
-    4 -> object : KindMode {
+    Kind.N4 -> object : KindMode {
         override fun getMode() = type
         override fun getTitle() = "N4单词"
     }
-    5 -> object : KindMode {
+    Kind.N5 -> object : KindMode {
         override fun getMode() = type
         override fun getTitle() = "N5单词"
     }
-    6 -> object : KindMode {
+    Kind.NUMERAL -> object : KindMode {
         override fun getMode() = type
         override fun getTitle() = "数词/量词"
     }
-    7 -> object : KindMode {
+    Kind.INVISIBLE -> object : KindMode {
         override fun getMode() = type
         override fun getTitle() = "隐藏单词"
     }
-    -2 -> object : KindMode {
+    Kind.MEMORIES -> object : KindMode {
         override fun getMode() = type
         override fun getTitle() = ""
     }
