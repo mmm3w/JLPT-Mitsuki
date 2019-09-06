@@ -34,4 +34,8 @@
         android:id="@+id/nav_test"
         android:title="测试"
         android:visible="false" />
+    <item
+        android:id="@+id/nav_setting"
+        android:title="设置"
+        android:visible="false" />
 </menu>

@@ -12,8 +12,9 @@
 - [ ] N1单词表
 - [ ] 数词/量词表
 - [ ] 单词小测验
-- [ ] Android原生TTS
+- [x] Android原生TTS
 - [ ] Google Translate TTS
 - [ ] Setting Page
 - [ ] 单词数据更新
 - [ ] 图标等内容
+- [ ] 语言国际化

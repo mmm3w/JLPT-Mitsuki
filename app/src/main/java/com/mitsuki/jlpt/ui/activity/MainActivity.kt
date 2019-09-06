@@ -14,6 +14,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.kodein.di.generic.instance
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.mitsuki.jlpt.app.*
+import com.mitsuki.jlpt.app.resultmanager.OnResultManager
+import com.mitsuki.jlpt.app.tts.NativeTTS
+import com.mitsuki.jlpt.app.tts.Speaker
 import com.mitsuki.jlpt.base.BaseActivity
 import com.mitsuki.jlpt.module.mainKodeinModule
 import com.mitsuki.jlpt.ui.widget.SwipeDeleteEvent
@@ -32,14 +35,13 @@ class MainActivity : BaseActivity<MainViewModel>() {
     private val mAdapter: WordAdapter by instance()
     private val itemTouchHelper: ItemTouchHelper by instance()
     private val swipeDeleteEvent: SwipeDeleteEvent by instance()
+    private val speaker: Speaker by lazy { NativeTTS.createSpeaker(this) }
     private var snackBol = false
     private var lastModify = 0
 
-//    private var textToSpeech: TextToSpeech? = null
-
     override fun initView(savedInstanceState: Bundle?) = R.layout.activity_main
     override fun initData(savedInstanceState: Bundle?) {
-        initTTS()
+
         initToolbar()
         initRecyclerView()
 
@@ -82,18 +84,6 @@ class MainActivity : BaseActivity<MainViewModel>() {
         setSupportActionBar(toolbar)
     }
 
-    private fun initTTS() {
-//        textToSpeech = TextToSpeech(this) {
-//            if (it == TextToSpeech.SUCCESS) {
-//                val result = textToSpeech?.setLanguage(Locale.JAPANESE)
-//                if (result != TextToSpeech.LANG_COUNTRY_AVAILABLE
-//                    && result != TextToSpeech.LANG_AVAILABLE
-//                ) {
-//                    Log.e("sdfa", "TTS暂时不支持这种语音的朗读！")
-//                }
-//            }
-//        }
-    }
 
     @SuppressLint("CheckResult")
     private fun initRecyclerView() {
@@ -115,10 +105,9 @@ class MainActivity : BaseActivity<MainViewModel>() {
                 viewModel.changeWordState(mAdapter.getItemForOut(it))
             }
 
-        mAdapter.parentSubject.observeOn(Schedulers.io()).autoDisposable(scopeProvider)
-            .subscribe {
-                //                textToSpeech?.speak(it.kana, TextToSpeech.QUEUE_FLUSH, null, it.cn)
-            }
+        mAdapter.parentSubject.autoDisposable(scopeProvider).subscribe {
+            speaker.speak(it.cn, it.kana) { toastShort { it } }
+        }
     }
 
     private fun showSnackbar() {
@@ -132,7 +121,6 @@ class MainActivity : BaseActivity<MainViewModel>() {
 
     private fun scrollToTop() {
         if (snackBol) return
-        if (lastModify == 0)
-            wordList.smoothScrollToPosition(0)
+        if (lastModify == 0) wordList.smoothScrollToPosition(0)
     }
 }

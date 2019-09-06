@@ -1,5 +1,6 @@
 package com.mitsuki.jlpt.base
 
+import android.content.Context
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.InflateException
@@ -11,8 +12,12 @@ import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.android.retainedKodein
+import org.kodein.di.generic.bind
+import org.kodein.di.generic.singleton
 
 abstract class BaseActivity<T : BaseViewModel> : AppCompatActivity(), IActivity, KodeinAware {
+
+    val TAG = javaClass.simpleName
 
     protected val scopeProvider by lazy {
         AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)

@@ -50,7 +50,7 @@ fun getKind(type: Int): KindMode? = when (type) {
         override fun getTitle() = ""
     }
     else -> object : KindMode {
-        override fun getMode() = type
+        override fun getMode() = Kind.ALL
         override fun getTitle() = "全部单词"
     }
 }

@@ -4,7 +4,10 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.ItemTouchHelper
+import com.mitsuki.jlpt.app.tts.NativeTTS
+import com.mitsuki.jlpt.app.tts.Speaker
 import com.mitsuki.jlpt.model.MainModel
+import com.mitsuki.jlpt.ui.activity.MainActivity
 import com.mitsuki.jlpt.ui.adapter.NumeralAdapter
 import com.mitsuki.jlpt.ui.adapter.WordAdapter
 import com.mitsuki.jlpt.ui.widget.SwipeDeleteEvent
