@@ -11,17 +11,28 @@ import com.mitsuki.jlpt.entity.WordState
 import com.mitsuki.jlpt.model.MainModel
 import com.uber.autodispose.autoDisposable
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.processors.BehaviorProcessor
+import io.reactivex.subjects.PublishSubject
 
 @SuppressLint("CheckResult")
 class MainViewModel(private val model: MainModel) : BaseViewModel() {
     private val dataProcessor: BehaviorProcessor<PagedList<Word>> = BehaviorProcessor.create()
+    private val eventSubject:PublishSubject<MainEvent> = PublishSubject.create()
     private var undoCache: WordState? = null
     private var disposable: Disposable? = null
     private var mode = 0
 
+    private var snackBol = false
+    private var lastModify = 0
+
+    fun observeData(): Flowable<PagedList<Word>> = dataProcessor.hide()
+
+    fun observeEvent(): Observable<MainEvent> = eventSubject.hide()
+
     fun switchMode(mode: Int) {
+        this.lastModify = -1
         this.mode = mode
         disposable?.dispose()
         disposable = when (mode) {
@@ -36,9 +47,9 @@ class MainViewModel(private val model: MainModel) : BaseViewModel() {
         }
     }
 
-    fun observeData(): Flowable<PagedList<Word>> = dataProcessor.hide()
-
-    fun changeWordState(word: Word?) {
+    fun changeWordState(position:Int,word: Word?) {
+        snackBol = true
+        lastModify = position
         word?.also {
             val s = WordState(it.id, fav = false, visible = mode == Kind.INVISIBLE)
             model.modifyWordState(s)
@@ -51,5 +62,17 @@ class MainViewModel(private val model: MainModel) : BaseViewModel() {
         undoCache?.also { model.modifyWordState(it) }
     }
 
+    fun checkListStatus(){
+        if (snackBol){
+            snackBol = false
+            eventSubject.onNext(MainEvent.SHOW_SNACKBAR)
+        }else{
+            if (lastModify == 0) eventSubject.onNext(MainEvent.SCROLL_TO_TOP)
+        }
+    }
+}
+
+enum class MainEvent{
+    SHOW_SNACKBAR, SCROLL_TO_TOP
 }
 
