@@ -1,9 +1,12 @@
 package com.mitsuki.jlpt.base
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.InflateException
+import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider

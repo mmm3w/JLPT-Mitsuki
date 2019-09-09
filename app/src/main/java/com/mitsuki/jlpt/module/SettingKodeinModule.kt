@@ -3,6 +3,7 @@ package com.mitsuki.jlpt.module
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.mitsuki.jlpt.model.SettingModel
+import com.mitsuki.jlpt.model.SettingRepository
 import com.mitsuki.jlpt.ui.adapter.SettingAdapter
 import com.mitsuki.jlpt.viewmodel.SettingViewModel
 import com.mitsuki.jlpt.viewmodel.SettingViewModelFactory
@@ -18,7 +19,7 @@ const val SETTING_MODULE_TAG = "SETTING_MODULE_TAG"
 val settingKodeinModule = Kodein.Module(SETTING_MODULE_TAG) {
     //Model
     bind<SettingModel>() with scoped<FragmentActivity>(AndroidLifecycleScope).singleton {
-        SettingModel()
+        SettingModel(instance())
     }
     //ViewModel
     bind<SettingViewModel>() with scoped<FragmentActivity>(AndroidLifecycleScope).singleton {
@@ -29,4 +30,9 @@ val settingKodeinModule = Kodein.Module(SETTING_MODULE_TAG) {
 
     //Adapter
     bind<SettingAdapter>() with scoped<FragmentActivity>(AndroidLifecycleScope).singleton { SettingAdapter() }
+
+    //setting Repository
+    bind<SettingRepository>() with scoped<FragmentActivity>(AndroidLifecycleScope).singleton {
+        SettingRepository.getInstance(instance())
+    }
 }

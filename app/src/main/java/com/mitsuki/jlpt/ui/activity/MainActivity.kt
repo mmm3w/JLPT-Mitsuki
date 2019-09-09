@@ -1,7 +1,7 @@
 package com.mitsuki.jlpt.ui.activity
 
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -12,14 +12,14 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.kodein.di.generic.instance
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.mitsuki.jlpt.app.*
+import com.mitsuki.jlpt.app.constants.WORD_KIND
 import com.mitsuki.jlpt.app.hint.showOperationResult
 import com.mitsuki.jlpt.app.hint.toastShort
 import com.mitsuki.jlpt.app.kind.Kind
 import com.mitsuki.jlpt.app.kind.getKind
-import com.mitsuki.jlpt.app.resultmanager.OnResultManager
 import com.mitsuki.jlpt.app.smoothscroll.SmoothScrollLayoutManager
-import com.mitsuki.jlpt.app.tts.NativeTTS
 import com.mitsuki.jlpt.app.tts.Speaker
+import com.mitsuki.jlpt.app.tts.TTSFactory
 import com.mitsuki.jlpt.base.BaseActivity
 import com.mitsuki.jlpt.module.mainKodeinModule
 import com.mitsuki.jlpt.ui.widget.SwipeDeleteEvent
@@ -30,8 +30,6 @@ import io.reactivex.schedulers.Schedulers
 
 class MainActivity : BaseActivity<MainViewModel>() {
 
-    private val WORD_KIND = "WORD_KIND"
-
     override val kodeinModule = mainKodeinModule
 
     override val viewModel: MainViewModel by instance()
@@ -39,7 +37,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
     private val itemTouchHelper: ItemTouchHelper by instance()
     private val swipeDeleteEvent: SwipeDeleteEvent by instance()
 
-    private val speaker: Speaker by lazy { NativeTTS.createSpeaker(this) }
+    private val speaker: Speaker by lazy { TTSFactory.create(this, TTSFactory.NATIVE) }
 
     override fun initView(savedInstanceState: Bundle?) = R.layout.activity_main
 
@@ -66,6 +64,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
             R.id.nav_numeral -> switchMode(Kind.NUMERAL)
             R.id.nav_invisible -> switchMode(Kind.INVISIBLE)
             R.id.nav_test -> switchMode(Kind.MEMORIES)
+            R.id.nav_setting -> startActivity(Intent(this, SettingActivity::class.java))
         }
         return false
     }
@@ -89,8 +88,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
         viewModel.observeData().autoDisposable(scopeProvider)
             .subscribe { mAdapter.submitList(it) { viewModel.checkListStatus() } }
 
-        viewModel.observeEvent().autoDisposable(scopeProvider)
-            .subscribe(this::onViewModelEvent)
+        viewModel.observeEvent().autoDisposable(scopeProvider).subscribe(this::onViewModelEvent)
     }
 
     private fun onViewModelEvent(event: MainEvent) {

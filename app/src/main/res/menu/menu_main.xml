@@ -36,6 +36,5 @@
         android:visible="false" />
     <item
         android:id="@+id/nav_setting"
-        android:title="设置"
-        android:visible="false" />
+        android:title="设置" />
 </menu>

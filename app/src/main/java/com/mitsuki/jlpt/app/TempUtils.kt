@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase.OPEN_READONLY
 import android.os.Environment
 import android.util.Log
 import androidx.room.Room
+import com.mitsuki.jlpt.app.constants.Constants
 import com.mitsuki.jlpt.db.MyDataBase
 import com.mitsuki.jlpt.entity.Word
 

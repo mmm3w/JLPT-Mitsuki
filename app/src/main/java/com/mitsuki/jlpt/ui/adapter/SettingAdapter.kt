@@ -1,38 +1,22 @@
 package com.mitsuki.jlpt.ui.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
-import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.mitsuki.jlpt.R
+import com.mitsuki.jlpt.base.BaseAdapter
 import com.mitsuki.jlpt.entity.Setting
 
-class SettingAdapter : PagedListAdapter<Setting, SettingAdapter.MyViewHolder>(diffCallback) {
+class SettingAdapter : BaseAdapter<Setting, SettingAdapter.MyViewHolder>() {
 
-    companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<Setting>() {
-            override fun areItemsTheSame(oldItem: Setting, newItem: Setting): Boolean =
-                oldItem.text == newItem.text
+    override fun onMyCreateViewHolder(viewGroup: ViewGroup, i: Int) = MyViewHolder(viewGroup)
 
-            override fun areContentsTheSame(oldItem: Setting, newItem: Setting): Boolean =
-                oldItem == newItem
-        }
+    override fun onMyBindViewHolder(t: MyViewHolder, i: Int) {
+        t.settingName.text = getItem(i).text
+        t.settingDescription.text = getItem(i).getExtString()
     }
-
-    @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        getItem(position)?.let {
-            holder.settingName.text = it.text
-            holder.settingDescription.text = it.getExtString()
-            holder.itemView.setOnClickListener { _ -> it.callback.invoke(it) }
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = MyViewHolder(parent)
 
     inner class MyViewHolder(parent: ViewGroup) :
         RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_setting, parent, false)) {

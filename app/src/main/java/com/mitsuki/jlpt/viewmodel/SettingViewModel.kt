@@ -7,7 +7,5 @@ class SettingViewModel(private val model: SettingModel) : BaseViewModel(){
 
 
 
-    fun linkSetting(){
-
-    }
+    fun linkSetting() =  model.getSetting()
 }

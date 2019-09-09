@@ -1,13 +1,10 @@
 package com.mitsuki.jlpt.app
 
 import android.content.Context
-import android.os.Environment
-import android.system.Os.read
-import android.util.Log
+import com.mitsuki.jlpt.app.constants.Constants
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.io.InputStream
 
 object DBImport {
 

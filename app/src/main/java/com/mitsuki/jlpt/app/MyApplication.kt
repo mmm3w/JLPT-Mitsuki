@@ -2,18 +2,16 @@ package com.mitsuki.jlpt.app
 
 import android.app.Application
 import android.content.Context
-import android.widget.Toast
+import android.content.SharedPreferences
 import androidx.room.Room
-import com.mitsuki.jlpt.app.resultmanager.OnResultManager
+import com.mitsuki.jlpt.app.constants.Constants
 import com.mitsuki.jlpt.db.MyDataBase
-import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.plugins.RxJavaPlugins
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.androidCoreModule
 import org.kodein.di.android.x.androidXModule
 import org.kodein.di.generic.bind
-import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
 
 class MyApplication : Application(), KodeinAware {
@@ -26,15 +24,26 @@ class MyApplication : Application(), KodeinAware {
 
         //Room
         bind<MyDataBase>() with singleton {
-            Room.databaseBuilder(this@MyApplication, MyDataBase::class.java, Constants.dbFile(this@MyApplication))
-                .build()
+            Room.databaseBuilder(
+                this@MyApplication, MyDataBase::class.java, Constants.dbFile(this@MyApplication)
+            ).build()
         }
+
+        bind<SharedPreferences>(SHARED_PREFERENCES_NAME) with singleton {
+            MyApplication.INSTANCE.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+        }
+
 
     }
 
     override fun onCreate() {
         super.onCreate()
+        INSTANCE = this
         DBImport.importDatabase(this)
         RxJavaPlugins.setErrorHandler { it.printStackTrace() }
+    }
+
+    companion object {
+        lateinit var INSTANCE: MyApplication
     }
 }
