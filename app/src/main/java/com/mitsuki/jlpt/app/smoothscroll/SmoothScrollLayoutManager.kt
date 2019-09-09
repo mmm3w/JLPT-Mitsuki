@@ -1,4 +1,4 @@
-package com.mitsuki.jlpt.app
+package com.mitsuki.jlpt.app.smoothscroll
 
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,7 +11,8 @@ class SmoothScrollLayoutManager(context: Context):LinearLayoutManager(context) {
         state: RecyclerView.State?,
         position: Int
     ) {
-        val linearSmoothScroller = MyLinearSmoothScroller(recyclerView?.context)
+        val linearSmoothScroller =
+            MyLinearSmoothScroller(recyclerView?.context)
         linearSmoothScroller.targetPosition = position
         startSmoothScroll(linearSmoothScroller)
     }

@@ -26,7 +26,7 @@ class MyApplication : Application(), KodeinAware {
 
         //Room
         bind<MyDataBase>() with singleton {
-            Room.databaseBuilder(this@MyApplication, MyDataBase::class.java, Constants.DATABASE_FILE)
+            Room.databaseBuilder(this@MyApplication, MyDataBase::class.java, Constants.dbFile(this@MyApplication))
                 .build()
         }
 

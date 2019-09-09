@@ -1,4 +1,4 @@
-package com.mitsuki.jlpt.app
+package com.mitsuki.jlpt.app.hint
 
 import android.content.Context
 import android.widget.Toast

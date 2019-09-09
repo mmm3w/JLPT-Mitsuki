@@ -12,9 +12,9 @@ import java.io.InputStream
 object DBImport {
 
     fun importDatabase(context: Context) {
-        if (File(Constants.DATABASE_FILE).exists()) return
+        if (File(Constants.dbFile(context)).exists()) return
 
-        var folder = File(Constants.DATABASE_FOLDER)
+        var folder = File(Constants.dbFolder(context))
         if (!folder.exists()) {
             folder.mkdirs()
         }
@@ -23,7 +23,7 @@ object DBImport {
             val fileNames = context.assets.list("db")
             for (name in fileNames) {
                 val inStream = context.assets.open("db/$name")
-                val outStream = FileOutputStream(Constants.DATABASE_FOLDER + "/$name")
+                val outStream = FileOutputStream(Constants.dbFolder(context) + "/$name")
                 inStream.use { input ->
                     outStream.use { output ->
                         input.copyTo(output)

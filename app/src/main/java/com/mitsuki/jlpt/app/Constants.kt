@@ -1,8 +1,8 @@
 package com.mitsuki.jlpt.app
-
-import android.os.Environment
-
+import android.content.Context
 object Constants {
-    val DATABASE_FOLDER = Environment.getExternalStorageDirectory().path + "/JLPT"
-    val DATABASE_FILE = "$DATABASE_FOLDER/jlpt.db"
+    fun dbFile(context: Context): String = "${dbFolder(context)}/jlpt.db"
+
+    fun dbFolder(context: Context): String =
+        "${context.getDir("data", Context.MODE_APPEND).absoluteFile}/JLPT"
 }

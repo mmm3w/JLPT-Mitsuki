@@ -13,7 +13,7 @@ interface WordDao {
     fun insert(words: List<Word>)
 
     @Query("SELECT * FROM word")
-    fun queryWords(): DataSource.Factory<Int, Word>
+    fun queryWords(): List<Word>
 
     @Query("SELECT * FROM word LEFT JOIN (SELECT sid,visible FROM WORD_STATE) ON sid=id WHERE visible IS NULL OR visible=1")
     fun queryWordsWithVisible(): DataSource.Factory<Int, Word>

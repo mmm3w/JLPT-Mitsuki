@@ -1,4 +1,4 @@
-package com.mitsuki.jlpt.app
+package com.mitsuki.jlpt.app.kind
 
 object Kind {
     const val ALL = 0

@@ -2,6 +2,7 @@ package com.mitsuki.jlpt.model
 
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
+import com.mitsuki.jlpt.base.BaseModel
 import com.mitsuki.jlpt.db.MyDataBase
 import com.mitsuki.jlpt.entity.Numeral
 import com.mitsuki.jlpt.entity.Word
@@ -10,7 +11,7 @@ import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.schedulers.Schedulers
 
-class MainModel(private val db: MyDataBase, private val config: PagedList.Config) {
+class MainModel(private val db: MyDataBase, private val config: PagedList.Config):BaseModel() {
 
     private val flowableMap: HashMap<String, Flowable<PagedList<Word>>> = HashMap()
 

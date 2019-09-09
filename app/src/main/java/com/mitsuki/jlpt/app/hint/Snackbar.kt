@@ -1,4 +1,4 @@
-package com.mitsuki.jlpt.app
+package com.mitsuki.jlpt.app.hint
 
 import android.view.View
 import com.google.android.material.snackbar.Snackbar

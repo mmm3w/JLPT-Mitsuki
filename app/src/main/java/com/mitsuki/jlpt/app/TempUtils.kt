@@ -40,7 +40,7 @@ object TempUtils {
             list.add(w)
         }
         Log.e("saf", "数量" + list.size.toString())
-        Room.databaseBuilder(context, MyDataBase::class.java, Constants.DATABASE_FILE)
+        Room.databaseBuilder(context, MyDataBase::class.java, Constants.dbFile(context))
             .allowMainThreadQueries()
             .build().wordDao().insert(list)
     }

@@ -1,12 +1,10 @@
 package com.mitsuki.jlpt.ui.activity
 
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.os.Bundle
-import android.speech.tts.TextToSpeech
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.mitsuki.jlpt.R
 import com.mitsuki.jlpt.ui.adapter.WordAdapter
 import com.mitsuki.jlpt.viewmodel.MainViewModel
@@ -14,7 +12,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.kodein.di.generic.instance
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.mitsuki.jlpt.app.*
+import com.mitsuki.jlpt.app.hint.showOperationResult
+import com.mitsuki.jlpt.app.hint.toastShort
+import com.mitsuki.jlpt.app.kind.Kind
+import com.mitsuki.jlpt.app.kind.getKind
 import com.mitsuki.jlpt.app.resultmanager.OnResultManager
+import com.mitsuki.jlpt.app.smoothscroll.SmoothScrollLayoutManager
 import com.mitsuki.jlpt.app.tts.NativeTTS
 import com.mitsuki.jlpt.app.tts.Speaker
 import com.mitsuki.jlpt.base.BaseActivity
@@ -23,7 +26,6 @@ import com.mitsuki.jlpt.ui.widget.SwipeDeleteEvent
 import com.uber.autodispose.autoDisposable
 import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
-import java.util.*
 
 class MainActivity : BaseActivity<MainViewModel>() {
 
@@ -41,7 +43,6 @@ class MainActivity : BaseActivity<MainViewModel>() {
 
     override fun initView(savedInstanceState: Bundle?) = R.layout.activity_main
     override fun initData(savedInstanceState: Bundle?) {
-
         initToolbar()
         initRecyclerView()
 

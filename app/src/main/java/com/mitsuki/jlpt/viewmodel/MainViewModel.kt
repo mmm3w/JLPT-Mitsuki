@@ -1,26 +1,18 @@
 package com.mitsuki.jlpt.viewmodel
 
 import android.annotation.SuppressLint
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagedList
-import com.mitsuki.jlpt.app.Kind
-import com.mitsuki.jlpt.base.AutoDisposeViewModel
+import com.mitsuki.jlpt.app.kind.Kind
 import com.mitsuki.jlpt.base.BaseViewModel
 import com.mitsuki.jlpt.entity.Word
 import com.mitsuki.jlpt.entity.WordState
 import com.mitsuki.jlpt.model.MainModel
 import com.uber.autodispose.autoDisposable
-import com.uber.autodispose.lifecycle.CorrespondingEventsFunction
-import com.uber.autodispose.lifecycle.LifecycleEndedException
-import com.uber.autodispose.lifecycle.LifecycleScopeProvider
 import io.reactivex.Flowable
-import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.processors.BehaviorProcessor
-import io.reactivex.subjects.BehaviorSubject
 
 @SuppressLint("CheckResult")
 class MainViewModel(private val model: MainModel) : BaseViewModel() {
@@ -61,6 +53,3 @@ class MainViewModel(private val model: MainModel) : BaseViewModel() {
 
 }
 
-class MainViewModelFactory(private val model: MainModel) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T = MainViewModel(model) as T
-}
