@@ -1,4 +1,4 @@
-package com.mitsuki.jlpt.app.smoothscroll
+package com.mitsuki.jlpt.ui.widget.smoothscroll
 
 import android.content.Context
 import android.util.DisplayMetrics

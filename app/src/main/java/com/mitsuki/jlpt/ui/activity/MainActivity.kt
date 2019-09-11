@@ -17,7 +17,7 @@ import com.mitsuki.jlpt.app.hint.showOperationResult
 import com.mitsuki.jlpt.app.hint.toastShort
 import com.mitsuki.jlpt.app.kind.Kind
 import com.mitsuki.jlpt.app.kind.getKind
-import com.mitsuki.jlpt.app.smoothscroll.SmoothScrollLayoutManager
+import com.mitsuki.jlpt.ui.widget.smoothscroll.SmoothScrollLayoutManager
 import com.mitsuki.jlpt.app.tts.Speaker
 import com.mitsuki.jlpt.app.tts.TTSFactory
 import com.mitsuki.jlpt.base.BaseActivity

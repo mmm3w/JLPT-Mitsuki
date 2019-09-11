@@ -9,9 +9,8 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
-        app:popupTheme="@style/PopupMenuStyle"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark" />
+        android:background="@color/white"
+        android:elevation="2dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/settingList"
