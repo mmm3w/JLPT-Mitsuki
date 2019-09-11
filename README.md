@@ -14,7 +14,7 @@
 - [ ] 单词小测验
 - [x] Android原生TTS
 - [ ] Google Translate TTS
-- [ ] Setting Page
+- [x] Setting Page
 - [ ] 单词数据更新
 - [ ] 图标等内容
 - [ ] 语言国际化

@@ -6,23 +6,36 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.mitsuki.jlpt.R
+import com.mitsuki.jlpt.app.clicksThrottleFirst
+import com.mitsuki.jlpt.base.AutoDisposeViewHolder
 import com.mitsuki.jlpt.base.BaseAdapter
 import com.mitsuki.jlpt.entity.Setting
+import com.uber.autodispose.autoDisposable
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 
 class SettingAdapter : BaseAdapter<Setting, SettingAdapter.MyViewHolder>() {
+
+    private val subject: PublishSubject<Setting> by lazy { PublishSubject.create<Setting>() }
 
     override fun onMyCreateViewHolder(viewGroup: ViewGroup, i: Int) = MyViewHolder(viewGroup)
 
     override fun onMyBindViewHolder(t: MyViewHolder, i: Int) {
         t.settingName.text = getItem(i).text
         t.settingDescription.text = getItem(i).getExtString()
+        t.itemView.clicksThrottleFirst().autoDisposable(t).subscribe { subject.onNext(getItem(i)) }
     }
 
-    inner class MyViewHolder(parent: ViewGroup) :
-        RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_setting, parent, false)) {
+    fun getItemClickEvent(): Observable<Setting> {
+        return subject.hide()
+    }
+
+    inner class MyViewHolder(parent: ViewGroup) : AutoDisposeViewHolder(
+        LayoutInflater.from(parent.context).inflate(R.layout.item_setting, parent, false)
+    ) {
         val settingName: TextView = itemView.findViewById(R.id.settingName)
         val settingDescription: TextView = itemView.findViewById(R.id.settingDescription)
-        val settingExt :FrameLayout = itemView.findViewById(R.id.settingExt)
+        val settingExt: FrameLayout = itemView.findViewById(R.id.settingExt)
     }
 }
 

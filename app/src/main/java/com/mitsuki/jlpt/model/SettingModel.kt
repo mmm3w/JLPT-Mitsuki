@@ -8,14 +8,9 @@ class SettingModel(private val spRepository: SettingRepository) : BaseModel() {
         fun getSetting():List<Setting>{
             val ttsSetting = object :Setting("TTS设置", spRepository.ttsKind){
                 override fun getExtString(): String {
-                    return when(ext as Int){
-                        TTSFactory.NATIVE -> "原生TTS输出"
-                        TTSFactory.GOOGLE_TRANSLATE -> "Google Translate TTS输出"
-                        else -> "未知TTS输出"
-                    }
+                    return TTSFactory.ttsStr(ext as Int)
                 }
             }
-
             val updateSetting = Setting("更新词表", "联网更新所有单词表")
 
             val dataDebugSetting = Setting("数据调试", "测试功能")

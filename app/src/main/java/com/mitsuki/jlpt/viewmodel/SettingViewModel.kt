@@ -5,7 +5,6 @@ import com.mitsuki.jlpt.model.SettingModel
 
 class SettingViewModel(private val model: SettingModel) : BaseViewModel(){
 
-
-
     fun linkSetting() =  model.getSetting()
+
 }
