@@ -8,10 +8,6 @@ class DataCheckModel(private val db :MyDataBase) :BaseModel(){
         return db.wordDao().queryWordNumber(kind)
     }
 
-    fun getNumeralNumber():Int{
-        return db.numeralDao().queryWordNumber()
-    }
-
     fun getInvisibleNumber():Int{
         return db.wordDao().queryInvisibleWordNumber()
     }

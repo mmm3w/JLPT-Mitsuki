@@ -37,11 +37,11 @@ class MainViewModel(private val model: MainModel) : BaseViewModel() {
         disposable?.dispose()
         disposable = when (mode) {
             Kind.ALL -> model.fetchAllWord().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
-            Kind.N1 -> model.fetchWordWithN1().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
-            Kind.N2 -> model.fetchWordWithN2().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
-            Kind.N3 -> model.fetchWordWithN3().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
-            Kind.N4 -> model.fetchWordWithN4().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
-            Kind.N5 -> model.fetchWordWithN5().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
+            Kind.N1 -> model.fetchWord(mode).autoDisposable(this).subscribe { dataProcessor.onNext(it) }
+            Kind.N2 -> model.fetchWord(mode).autoDisposable(this).subscribe { dataProcessor.onNext(it) }
+            Kind.N3 -> model.fetchWord(mode).autoDisposable(this).subscribe { dataProcessor.onNext(it) }
+            Kind.N4 -> model.fetchWord(mode).autoDisposable(this).subscribe { dataProcessor.onNext(it) }
+            Kind.N5 -> model.fetchWord(mode).autoDisposable(this).subscribe { dataProcessor.onNext(it) }
             Kind.INVISIBLE -> model.fetchWordWithInvisible().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
             else -> null
         }

@@ -37,7 +37,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
     private val itemTouchHelper: ItemTouchHelper by instance()
     private val swipeDeleteEvent: SwipeDeleteEvent by instance()
 
-    private val speaker: Speaker by lazy { TTSFactory.create(this, TTSFactory.NATIVE) }
+    private val speaker: Speaker by instance(TTSFactory.NATIVE)
 
     override fun initView(savedInstanceState: Bundle?) = R.layout.activity_main
 
@@ -61,9 +61,9 @@ class MainActivity : BaseActivity<MainViewModel>() {
             R.id.nav_n3 -> switchMode(Kind.N3)
             R.id.nav_n4 -> switchMode(Kind.N4)
             R.id.nav_n5 -> switchMode(Kind.N5)
-            R.id.nav_numeral -> switchMode(Kind.NUMERAL)
             R.id.nav_invisible -> switchMode(Kind.INVISIBLE)
-            R.id.nav_test -> switchMode(Kind.MEMORIES)
+            R.id.nav_numeral -> toastShort { "开发中" }
+            R.id.nav_test -> toastShort { "开发中" }
             R.id.nav_setting -> startActivity(Intent(this, SettingActivity::class.java))
         }
         return false

@@ -35,6 +35,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/text_kana"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="kana"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/text_voice"
+            app:layout_constraintTop_toBottomOf="@id/text_jp" />
+
+        <TextView
             android:id="@+id/text_cn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -44,18 +55,7 @@
             android:textSize="18sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/text_voice"
-            app:layout_constraintTop_toBottomOf="@id/text_jp" />
-
-        <TextView
-            android:id="@+id/text_rei"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="rei"
-            android:textSize="16sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/text_voice"
-            app:layout_constraintTop_toBottomOf="@id/text_cn" />
+            app:layout_constraintTop_toBottomOf="@id/text_kana" />
 
         <ImageView
             android:id="@+id/text_voice"

@@ -2,7 +2,6 @@ package com.mitsuki.jlpt.ui.activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
 import com.mitsuki.jlpt.R
 import com.mitsuki.jlpt.app.kind.Kind

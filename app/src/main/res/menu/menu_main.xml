@@ -5,35 +5,28 @@
         android:title="全部单词" />
     <item
         android:id="@+id/nav_n1"
-        android:title="N1单词"
-        android:visible="false" />
+        android:title="N1单词" />
     <item
         android:id="@+id/nav_n2"
-        android:title="N2单词"
-        android:visible="false" />
+        android:title="N2单词" />
     <item
         android:id="@+id/nav_n3"
-        android:title="N3单词"
-        android:visible="false" />
+        android:title="N3单词" />
     <item
         android:id="@+id/nav_n4"
-        android:title="N4单词"
-        android:visible="false" />
+        android:title="N4单词" />
     <item
         android:id="@+id/nav_n5"
         android:title="N5单词" />
-
-    <item
-        android:id="@+id/nav_numeral"
-        android:title="数词/量词"
-        android:visible="false" />
     <item
         android:id="@+id/nav_invisible"
         android:title="隐藏单词" />
     <item
+        android:id="@+id/nav_numeral"
+        android:title="数词/量词" />
+    <item
         android:id="@+id/nav_test"
-        android:title="测试"
-        android:visible="false" />
+        android:title="测试" />
     <item
         android:id="@+id/nav_setting"
         android:title="设置" />

@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
 import com.mitsuki.jlpt.app.constants.Constants
+import com.mitsuki.jlpt.app.tts.Speaker
+import com.mitsuki.jlpt.app.tts.TTSFactory
 import com.mitsuki.jlpt.db.MyDataBase
 import io.reactivex.plugins.RxJavaPlugins
 import org.kodein.di.Kodein
@@ -33,7 +35,9 @@ class MyApplication : Application(), KodeinAware {
             MyApplication.INSTANCE.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
         }
 
-
+        //TTS
+        bind<Speaker>(TTSFactory.NATIVE) with singleton { TTSFactory.create(INSTANCE, TTSFactory.NATIVE) }
+        bind<Speaker>(TTSFactory.GOOGLE_TRANSLATE) with singleton { TTSFactory.create(INSTANCE, TTSFactory.GOOGLE_TRANSLATE) }
     }
 
     override fun onCreate() {

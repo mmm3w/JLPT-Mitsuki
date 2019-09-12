@@ -11,6 +11,7 @@ import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.mitsuki.jlpt.R
 import com.mitsuki.jlpt.app.constants.TTS_KIND
 import com.mitsuki.jlpt.app.getInt
+import com.mitsuki.jlpt.app.hint.toastShort
 import com.mitsuki.jlpt.app.putInt
 import com.mitsuki.jlpt.app.tts.TTSFactory
 import com.mitsuki.jlpt.base.BaseActivity
@@ -54,25 +55,24 @@ class SettingActivity : BaseActivity<SettingViewModel>() {
 
     private fun onSettingEvent(setting: Setting) {
         when (setting.text) {
-            "更新词表" -> {
-            }
-            "TTS设置" -> showTTSDialog()
+            "更新词表" -> toastShort { "开发中" }
+            "TTS设置" -> toastShort { "开发中" }
             "数据调试" -> startActivity(Intent(this, DataCheckActivity::class.java))
         }
     }
 
     private fun showTTSDialog() {
         //TODO:待完善，在Google translate TTS实现之前暂时不使用该功能
-//        MaterialDialog(this).show {
-//            title(text = "TTS设置")
-//            listItemsSingleChoice(
-//                items = TTSFactory.list(),
-//                initialSelection = TTSFactory.list().indexOf(TTSFactory.ttsStr(getInt(TTS_KIND))) + 1
-//            ) { _: MaterialDialog, _: Int, str: CharSequence ->
-//                putInt(TTS_KIND, TTSFactory.ttsInt(str.toString()))
-//            }
-//            lifecycleOwner(this@SettingActivity)
-//        }
+        //        MaterialDialog(this).show {
+        //            title(text = "TTS设置")
+        //            listItemsSingleChoice(
+        //                items = TTSFactory.list(),
+        //                initialSelection = TTSFactory.list().indexOf(TTSFactory.ttsStr(getInt(TTS_KIND))) + 1
+        //            ) { _: MaterialDialog, _: Int, str: CharSequence ->
+        //                putInt(TTS_KIND, TTSFactory.ttsInt(str.toString()))
+        //            }
+        //            lifecycleOwner(this@SettingActivity)
+        //        }
     }
 
 }

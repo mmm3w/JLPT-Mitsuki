@@ -7,8 +7,9 @@ object Kind {
     const val N3 = 3
     const val N4 = 4
     const val N5 = 5
-    const val NUMERAL = 6
     const val INVISIBLE = 7
+    //小于0时选择不会被存储
+    const val NUMERAL = -1
     const val MEMORIES = -2
 }
 

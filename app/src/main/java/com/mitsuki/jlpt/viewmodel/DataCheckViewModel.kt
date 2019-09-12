@@ -23,7 +23,7 @@ class DataCheckViewModel(private val model: DataCheckModel) : BaseViewModel() {
                 subject.onNext(DataCheckViewState(Kind.N3, model.getWordNumber(Kind.N3)))
                 subject.onNext(DataCheckViewState(Kind.N4, model.getWordNumber(Kind.N4)))
                 subject.onNext(DataCheckViewState(Kind.N5, model.getWordNumber(Kind.N5)))
-                subject.onNext(DataCheckViewState(Kind.NUMERAL, model.getNumeralNumber()))
+                subject.onNext(DataCheckViewState(Kind.NUMERAL, model.getWordNumber(Kind.NUMERAL)))
                 subject.onNext(DataCheckViewState(Kind.INVISIBLE, model.getInvisibleNumber()))
             }
     }
