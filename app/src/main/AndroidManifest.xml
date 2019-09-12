@@ -22,6 +22,7 @@
         </activity>
 
         <activity android:name=".ui.activity.SettingActivity" />
+        <activity android:name=".ui.activity.DataCheckActivity" />
     </application>
 
 </manifest>

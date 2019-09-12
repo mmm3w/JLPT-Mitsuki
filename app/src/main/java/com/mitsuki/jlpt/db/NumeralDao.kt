@@ -14,4 +14,7 @@ interface NumeralDao {
 
     @Query("SELECT * FROM numeral")
     fun queryWords(): DataSource.Factory<Int, Numeral>
+
+    @Query("SELECT COUNT(*) FROM numeral")
+    fun queryWordNumber(): Int
 }

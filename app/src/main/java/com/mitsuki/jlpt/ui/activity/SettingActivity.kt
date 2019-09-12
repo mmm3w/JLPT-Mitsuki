@@ -1,6 +1,7 @@
 package com.mitsuki.jlpt.ui.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
@@ -56,8 +57,7 @@ class SettingActivity : BaseActivity<SettingViewModel>() {
             "更新词表" -> {
             }
             "TTS设置" -> showTTSDialog()
-            "数据调试" -> {
-            }
+            "数据调试" -> startActivity(Intent(this, DataCheckActivity::class.java))
         }
     }
 

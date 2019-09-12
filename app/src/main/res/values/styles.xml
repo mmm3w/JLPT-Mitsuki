@@ -10,10 +10,14 @@
         <item name="android:statusBarColor">@color/white</item>
     </style>
 
-    <style name="PopupMenuStyle" parent="Widget.AppCompat.PopupMenu.Overflow">
-        <item name="android:textColor">@color/black</item>
-        <item name="android:itemBackground">@color/white</item>
+    <style name="TextStyle1">
+        <item name="android:textSize">16sp</item>
+        <item name="android:lines">1</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:background">@color/white</item>
     </style>
+
+
 
 
 </resources>

@@ -33,7 +33,7 @@ class MainModel(private val db: MyDataBase, private val config: PagedList.Config
     //N5
     fun fetchWordWithN5(): Flowable<PagedList<Word>> {
         flowableMap["fetchWordWithN5"]?.let { return it }
-        val temp = RxPagedListBuilder(db.wordDao().queryWordsWithN5(), config)
+        val temp = RxPagedListBuilder(db.wordDao().queryWordsWithVisible(5), config)
             .setFetchScheduler(Schedulers.io())
             .buildFlowable(BackpressureStrategy.LATEST)
         flowableMap["fetchWordWithN5"] = temp
@@ -43,7 +43,7 @@ class MainModel(private val db: MyDataBase, private val config: PagedList.Config
     //N4
     fun fetchWordWithN4(): Flowable<PagedList<Word>> {
         flowableMap["fetchWordWithN4"]?.let { return it }
-        val temp = RxPagedListBuilder(db.wordDao().queryWordsWithN4(), config)
+        val temp = RxPagedListBuilder(db.wordDao().queryWordsWithVisible(4), config)
             .setFetchScheduler(Schedulers.io())
             .buildFlowable(BackpressureStrategy.LATEST)
         flowableMap["fetchWordWithN4"] = temp
@@ -53,7 +53,7 @@ class MainModel(private val db: MyDataBase, private val config: PagedList.Config
     //N3
     fun fetchWordWithN3(): Flowable<PagedList<Word>> {
         flowableMap["fetchWordWithN3"]?.let { return it }
-        val temp = RxPagedListBuilder(db.wordDao().queryWordsWithN3(), config)
+        val temp = RxPagedListBuilder(db.wordDao().queryWordsWithVisible(3), config)
             .setFetchScheduler(Schedulers.io())
             .buildFlowable(BackpressureStrategy.LATEST)
         flowableMap["fetchWordWithN3"] = temp
@@ -63,7 +63,7 @@ class MainModel(private val db: MyDataBase, private val config: PagedList.Config
     //N2
     fun fetchWordWithN2(): Flowable<PagedList<Word>> {
         flowableMap["fetchWordWithN2"]?.let { return it }
-        val temp = RxPagedListBuilder(db.wordDao().queryWordsWithN2(), config)
+        val temp = RxPagedListBuilder(db.wordDao().queryWordsWithVisible(2), config)
             .setFetchScheduler(Schedulers.io())
             .buildFlowable(BackpressureStrategy.LATEST)
         flowableMap["fetchWordWithN2"] = temp
@@ -73,7 +73,7 @@ class MainModel(private val db: MyDataBase, private val config: PagedList.Config
     //N1
     fun fetchWordWithN1(): Flowable<PagedList<Word>> {
         flowableMap["fetchWordWithN1"]?.let { return it }
-        val temp = RxPagedListBuilder(db.wordDao().queryWordsWithN1(), config)
+        val temp = RxPagedListBuilder(db.wordDao().queryWordsWithVisible(1), config)
             .setFetchScheduler(Schedulers.io())
             .buildFlowable(BackpressureStrategy.LATEST)
         flowableMap["fetchWordWithN1"] = temp

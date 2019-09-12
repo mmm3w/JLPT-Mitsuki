@@ -12,7 +12,7 @@ object Kind {
     const val MEMORIES = -2
 }
 
-fun getKind(type: Int): KindMode? = when (type) {
+fun getKind(type: Int): KindMode = when (type) {
     Kind.ALL -> object : KindMode {
         override fun getMode() = type
         override fun getTitle() = "全部单词"

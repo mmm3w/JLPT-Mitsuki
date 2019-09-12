@@ -71,7 +71,6 @@ class MainActivity : BaseActivity<MainViewModel>() {
 
     private fun initToolbar() {
         setSupportActionBar(toolbar)
-
     }
 
     @SuppressLint("CheckResult")
