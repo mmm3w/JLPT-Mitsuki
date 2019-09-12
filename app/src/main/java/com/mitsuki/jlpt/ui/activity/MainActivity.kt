@@ -71,6 +71,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
 
     private fun initToolbar() {
         setSupportActionBar(toolbar)
+
     }
 
     @SuppressLint("CheckResult")
@@ -94,7 +95,8 @@ class MainActivity : BaseActivity<MainViewModel>() {
     private fun onViewModelEvent(event: MainEvent) {
         when (event) {
             MainEvent.SHOW_SNACKBAR -> showSnackbar()
-            MainEvent.SCROLL_TO_TOP -> scrollToTop()
+            MainEvent.SCROLL_TO_TOP -> wordList.smoothScrollToPosition(0)
+            MainEvent.EXPAND_APP_BAR -> appBar.setExpanded(true)
         }
     }
 
@@ -102,8 +104,6 @@ class MainActivity : BaseActivity<MainViewModel>() {
         Completable.fromAction {}.observeOn(Schedulers.io()).autoDisposable(scopeProvider)
             .subscribe { viewModel.undoOperation() }
     }
-
-    private fun scrollToTop() = wordList.smoothScrollToPosition(0)
 
     private fun switchMode(order: Int) {
         getKind(order)?.let {

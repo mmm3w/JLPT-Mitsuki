@@ -67,12 +67,13 @@ class MainViewModel(private val model: MainModel) : BaseViewModel() {
             snackBol = false
             eventSubject.onNext(MainEvent.SHOW_SNACKBAR)
         }else{
+            eventSubject.onNext(MainEvent.EXPAND_APP_BAR)
             if (lastModify == 0) eventSubject.onNext(MainEvent.SCROLL_TO_TOP)
         }
     }
 }
 
 enum class MainEvent{
-    SHOW_SNACKBAR, SCROLL_TO_TOP
+    SHOW_SNACKBAR, SCROLL_TO_TOP, EXPAND_APP_BAR
 }
 
