@@ -28,7 +28,6 @@ class NativeTTS private constructor(context: Context) : Speaker {
         }
 
         textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, tag)
-        callback.invoke(message)
     }
 
     companion object {
