@@ -3,6 +3,9 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.mitsuki.jlpt">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <application
             android:name=".app.MyApplication"
             android:allowBackup="true"
@@ -23,6 +26,7 @@
 
         <activity android:name=".ui.activity.SettingActivity" />
         <activity android:name=".ui.activity.DataCheckActivity" />
+        <activity android:name=".ui.activity.NumeralActivity"/>
     </application>
 
 </manifest>

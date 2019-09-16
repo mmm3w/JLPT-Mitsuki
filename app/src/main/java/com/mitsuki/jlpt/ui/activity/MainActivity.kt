@@ -27,6 +27,7 @@ import com.mitsuki.jlpt.viewmodel.MainEvent
 import com.uber.autodispose.autoDisposable
 import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
+import org.kodein.di.newInstance
 
 class MainActivity : BaseActivity<MainViewModel>() {
 
@@ -37,7 +38,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
     private val itemTouchHelper: ItemTouchHelper by instance()
     private val swipeDeleteEvent: SwipeDeleteEvent by instance()
 
-    private val speaker: Speaker by instance(TTSFactory.NATIVE)
+    private val speaker: Speaker = TTSFactory.create(MyApplication.INSTANCE, TTSFactory.NATIVE)
 
     override fun initView(savedInstanceState: Bundle?) = R.layout.activity_main
 
@@ -62,7 +63,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
             R.id.nav_n4 -> switchMode(Kind.N4)
             R.id.nav_n5 -> switchMode(Kind.N5)
             R.id.nav_invisible -> switchMode(Kind.INVISIBLE)
-            R.id.nav_numeral -> toastShort { "开发中" }
+            R.id.nav_numeral -> startActivity(Intent(this, NumeralActivity::class.java))
             R.id.nav_test -> toastShort { "开发中" }
             R.id.nav_setting -> startActivity(Intent(this, SettingActivity::class.java))
         }

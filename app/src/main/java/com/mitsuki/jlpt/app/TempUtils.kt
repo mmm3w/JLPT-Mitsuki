@@ -10,7 +10,12 @@ import androidx.room.Room
 import com.mitsuki.jlpt.app.constants.Constants
 import com.mitsuki.jlpt.app.kind.Kind
 import com.mitsuki.jlpt.db.MyDataBase
+import com.mitsuki.jlpt.entity.NumeralSort
 import com.mitsuki.jlpt.entity.Word
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileInputStream
+import java.io.InputStreamReader
 import java.nio.file.WatchEvent
 
 
@@ -53,14 +58,14 @@ object TempUtils {
             if (list.size == 857) {
                 kindNumber = Kind.N2
             }
-            if (list.size == 2688){
+            if (list.size == 2688) {
                 kindNumber = Kind.N3
             }
 
-            if (list.size == 4491){
+            if (list.size == 4491) {
                 kindNumber = Kind.N4
             }
-            if (list.size == 5125){
+            if (list.size == 5125) {
                 kindNumber = Kind.N5
             }
 
@@ -77,5 +82,55 @@ object TempUtils {
         Log.e("saf", "数量" + list.size.toString())
         Room.databaseBuilder(context, MyDataBase::class.java, Constants.dbFile(context))
             .allowMainThreadQueries().build().wordDao().insert(list)
+    }
+
+    fun getNumeral(context: Context) {
+        val numeral = File(Environment.getExternalStorageDirectory().path + "/numeral")
+
+        val numTitle = ArrayList<NumeralSort>()
+        val numItem = ArrayList<Word>()
+        var tempSort: NumeralSort? = null
+
+
+        try {
+            val fileInputStream = FileInputStream(numeral)
+            val inputReader = InputStreamReader(fileInputStream)
+            BufferedReader(inputReader).use {
+                var line: String
+                while (true) {
+                    line = it.readLine() ?: break
+
+                    if (line.contains("#")) {
+                        tempSort?.let { num ->
+                            num.end = numItem.size - 1
+                            num.total = numItem.size - num.start
+                            numTitle.add(num)
+                        }
+
+                        tempSort = NumeralSort(0, line.replace("#", ""), numItem.size, 0, 0)
+                    } else {
+                        val s = line.split("|")
+                        val word = Word(0, s[2], s[0], s[1], Kind.NUMERAL)
+                        numItem.add(word)
+                    }
+                }
+            }
+            fileInputStream.close()
+        } catch (e: Exception) {
+
+        }
+
+
+        tempSort?.let { num ->
+            num.end = numItem.size - 1
+            num.total = numItem.size - num.start
+            numTitle.add(num)
+        }
+
+        val dao =  Room.databaseBuilder(context, MyDataBase::class.java, Constants.dbFile(context))
+            .allowMainThreadQueries().build()
+        dao.wordDao().insert(numItem)
+        dao.wordDao().insertSort(numTitle)
+
     }
 }

@@ -32,12 +32,8 @@ class MyApplication : Application(), KodeinAware {
         }
 
         bind<SharedPreferences>(SHARED_PREFERENCES_NAME) with singleton {
-            MyApplication.INSTANCE.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+            INSTANCE.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
         }
-
-        //TTS
-        bind<Speaker>(TTSFactory.NATIVE) with singleton { TTSFactory.create(INSTANCE, TTSFactory.NATIVE) }
-        bind<Speaker>(TTSFactory.GOOGLE_TRANSLATE) with singleton { TTSFactory.create(INSTANCE, TTSFactory.GOOGLE_TRANSLATE) }
     }
 
     override fun onCreate() {
