@@ -10,7 +10,9 @@ import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import org.kodein.di.Copy
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
+import org.kodein.di.KodeinContext
 import org.kodein.di.android.x.closestKodein
+import org.kodein.di.generic.kcontext
 
 abstract class BaseFragment<T : BaseViewModel> : Fragment(),IFragment, KodeinAware {
     protected val scopeProvider: AndroidLifecycleScopeProvider by lazy {
@@ -20,6 +22,7 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment(),IFragment, KodeinAwa
     abstract val kodeinModule: Kodein.Module
     abstract val viewModel: T
     private val parentKodein by closestKodein()
+    override val kodeinContext : KodeinContext<*> get() = kcontext(this)
     override val kodein = Kodein.lazy {
         extend(parentKodein, copy = Copy.All)
         import(kodeinModule)

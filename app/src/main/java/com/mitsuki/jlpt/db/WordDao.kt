@@ -16,11 +16,17 @@ interface WordDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertSort(sort: List<NumeralSort>)
 
+    @Query("SELECT * FROM numeral_sort")
+    fun queryNumeralSort(): List<NumeralSort>
+
+    @Query("SELECT * FROM word WHERE kind=:kind LIMIT :total OFFSET :start")
+    fun queryNumeralDetail(start: Int, total: Int, kind: Int): List<Word>
+
     @Query("SELECT COUNT(*) FROM word WHERE kind=:kind")
     fun queryWordNumber(kind: Int): Int
 
     @Query("SELECT COUNT(*) FROM word LEFT JOIN (SELECT sid,visible FROM WORD_STATE) ON sid=id WHERE visible=0")
-    fun queryInvisibleWordNumber():Int
+    fun queryInvisibleWordNumber(): Int
 
     @Query("SELECT * FROM word LEFT JOIN (SELECT sid,visible FROM WORD_STATE) ON sid=id WHERE (visible IS NULL OR visible=1) AND kind<>-1")
     fun queryWordsWithVisible(): DataSource.Factory<Int, Word>

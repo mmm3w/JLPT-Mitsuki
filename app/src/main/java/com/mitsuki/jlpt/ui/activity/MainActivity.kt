@@ -106,7 +106,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
     }
 
     private fun switchMode(order: Int) {
-        getKind(order)?.let {
+        getKind(order).let {
             if (it.getMode() >= 0) {
                 putInt(WORD_KIND, it.getMode())
                 title = it.getTitle()

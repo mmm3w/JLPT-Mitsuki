@@ -1,22 +1,17 @@
 package com.mitsuki.jlpt.base
 
-import android.content.Context
-import android.os.Build
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.InflateException
-import android.view.View
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import org.kodein.di.Copy
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
+import org.kodein.di.KodeinContext
 import org.kodein.di.android.closestKodein
 import org.kodein.di.android.retainedKodein
-import org.kodein.di.generic.bind
-import org.kodein.di.generic.singleton
+import org.kodein.di.generic.kcontext
 
 abstract class BaseActivity<T : BaseViewModel> : AppCompatActivity(), IActivity, KodeinAware {
 
@@ -26,6 +21,7 @@ abstract class BaseActivity<T : BaseViewModel> : AppCompatActivity(), IActivity,
         AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)
     }
 
+    override val kodeinContext: KodeinContext<*> = kcontext(this)
     abstract val kodeinModule: Kodein.Module
     abstract val viewModel: T
 

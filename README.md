@@ -10,7 +10,7 @@
 - [x] N3单词表
 - [x] N2单词表
 - [x] N1单词表
-- [ ] 数词/量词表
+- [x] 数词/量词表
 - [ ] 单词小测验
 - [x] Android原生TTS
 - [ ] Google Translate TTS
