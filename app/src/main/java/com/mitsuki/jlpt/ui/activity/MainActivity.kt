@@ -16,6 +16,7 @@ import com.mitsuki.jlpt.app.*
 import com.mitsuki.jlpt.app.constants.Constants
 import com.mitsuki.jlpt.app.constants.WORD_KIND
 import com.mitsuki.jlpt.app.hint.showOperationResult
+import com.mitsuki.jlpt.app.hint.toastLong
 import com.mitsuki.jlpt.app.hint.toastShort
 import com.mitsuki.jlpt.app.kind.Kind
 import com.mitsuki.jlpt.app.kind.getKind
@@ -28,6 +29,7 @@ import com.mitsuki.jlpt.ui.widget.SwipeDeleteEvent
 import com.mitsuki.jlpt.viewmodel.MainEvent
 import com.uber.autodispose.autoDisposable
 import io.reactivex.Completable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.kodein.di.newInstance
 
@@ -49,6 +51,8 @@ class MainActivity : BaseActivity<MainViewModel>() {
         initComponent()
 
         switchMode(getInt(WORD_KIND))
+
+        viewModel.checkWordVersion()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -91,7 +95,8 @@ class MainActivity : BaseActivity<MainViewModel>() {
         viewModel.observeData().autoDisposable(scopeProvider)
             .subscribe { mAdapter.submitList(it) { viewModel.checkListStatus() } }
 
-        viewModel.observeEvent().autoDisposable(scopeProvider).subscribe(this::onViewModelEvent)
+        viewModel.observeEvent().observeOn(AndroidSchedulers.mainThread())
+            .autoDisposable(scopeProvider).subscribe(this::onViewModelEvent)
     }
 
     private fun onViewModelEvent(event: MainEvent) {

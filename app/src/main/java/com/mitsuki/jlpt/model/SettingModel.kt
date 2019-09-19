@@ -4,7 +4,7 @@ import com.mitsuki.jlpt.app.tts.TTSFactory
 import com.mitsuki.jlpt.base.BaseModel
 import com.mitsuki.jlpt.entity.Setting
 
-class SettingModel(private val spRepository: SettingRepository) : BaseModel() {
+class SettingModel(private val spRepository: SPRepository) : BaseModel() {
         fun getSetting():List<Setting>{
             val ttsSetting = object :Setting("TTS设置", spRepository.ttsKind){
                 override fun getExtString(): String {

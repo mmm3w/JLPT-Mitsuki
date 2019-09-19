@@ -21,7 +21,7 @@ const val MAIN_MODULE_TAG = "MAIN_MODULE_TAG"
 val mainKodeinModule = Kodein.Module(MAIN_MODULE_TAG) {
     //Model
     bind<MainModel>() with scoped<FragmentActivity>(AndroidLifecycleScope).singleton {
-        MainModel(simpleRequest = instance(), db = instance(), config = instance())
+        MainModel(simpleRequest = instance(), db = instance(), config = instance(), spRepository = instance())
     }
     //ViewModel
     bind<MainViewModel>() with scoped<FragmentActivity>(AndroidLifecycleScope).singleton {

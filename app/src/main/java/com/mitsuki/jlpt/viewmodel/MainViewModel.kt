@@ -12,8 +12,10 @@ import com.mitsuki.jlpt.model.MainModel
 import com.uber.autodispose.autoDisposable
 import io.reactivex.Flowable
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.processors.BehaviorProcessor
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 
 @SuppressLint("CheckResult")
@@ -72,9 +74,11 @@ class MainViewModel(private val model: MainModel) : BaseViewModel() {
         }
     }
 
-    fun checkWordVerison(){
+    fun checkWordVersion(){
         model.requestVersion().filter { it!=-1 }.autoDisposable(this)
-            .subscribe { eventSubject.onNext(MainEvent.NEW_WORD_VERSION) }
+            .subscribe {
+                eventSubject.onNext(MainEvent.NEW_WORD_VERSION)
+            }
     }
 }
 

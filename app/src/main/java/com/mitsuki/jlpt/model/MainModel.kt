@@ -17,6 +17,7 @@ import io.reactivex.Observable as Observable
 
 class MainModel(
     private val simpleRequest: SimpleRequest,
+    private val spRepository: SPRepository,
     private val db: MyDataBase,
     private val config: PagedList.Config
 ) : BaseModel() {
@@ -64,7 +65,7 @@ class MainModel(
     fun requestVersion(): Observable<Int> {
         return Observable.create<Int> { emitter ->
             simpleRequest.requestVersion {
-                emitter.onNext(it)
+                emitter.onNext(if (it > spRepository.wordVersion) it else -1)
                 emitter.onComplete()
             }
         }
