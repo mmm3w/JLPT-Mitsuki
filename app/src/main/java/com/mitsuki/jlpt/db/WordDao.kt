@@ -19,6 +19,9 @@ interface WordDao {
     @Query("SELECT * FROM numeral_sort")
     fun queryNumeralSort(): List<NumeralSort>
 
+    @Query("SELECT * FROM word")
+    fun queryWord(): List<Word>
+
     @Query("SELECT * FROM word WHERE kind=:kind LIMIT :total OFFSET :start")
     fun queryNumeralDetail(start: Int, total: Int, kind: Int): List<Word>
 

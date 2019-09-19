@@ -12,10 +12,9 @@ import com.mitsuki.jlpt.app.kind.Kind
 import com.mitsuki.jlpt.db.MyDataBase
 import com.mitsuki.jlpt.entity.NumeralSort
 import com.mitsuki.jlpt.entity.Word
-import java.io.BufferedReader
-import java.io.File
-import java.io.FileInputStream
-import java.io.InputStreamReader
+import java.io.*
+import java.nio.ByteBuffer
+import java.nio.channels.FileChannel
 import java.nio.file.WatchEvent
 
 
@@ -132,5 +131,31 @@ object TempUtils {
         dao.wordDao().insert(numItem)
         dao.wordDao().insertSort(numTitle)
 
+    }
+
+    fun printToFile(context: Context){
+        val dao =  Room.databaseBuilder(context, MyDataBase::class.java, Constants.dbFile(context))
+            .allowMainThreadQueries().build()
+
+
+        var fc: FileChannel? = null
+        val file = File("${Constants.dbFolder(context)}/words")
+
+        try {
+            fc = FileOutputStream(file, true).channel
+            for (word in  dao.wordDao().queryWord()){
+                fc?.write(ByteBuffer.wrap("${word.id}|${word.cn}|${word.jp}|${word.kana}|${word.kind}".toByteArray()))
+                fc?.write(ByteBuffer.wrap("\r\n".toByteArray()))
+                fc?.force(true)
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } finally {
+            try {
+                fc?.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
     }
 }
