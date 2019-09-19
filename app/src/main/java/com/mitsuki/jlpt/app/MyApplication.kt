@@ -31,6 +31,9 @@ class MyApplication : Application(), KodeinAware {
             ).build()
         }
 
+        //okhttp
+        bind<SimpleRequest>() with singleton { SimpleRequest() }
+
         bind<SharedPreferences>(SHARED_PREFERENCES_NAME) with singleton {
             INSTANCE.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
         }

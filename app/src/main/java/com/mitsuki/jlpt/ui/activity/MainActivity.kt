@@ -3,6 +3,7 @@ package com.mitsuki.jlpt.ui.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.mitsuki.jlpt.R
@@ -12,6 +13,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.kodein.di.generic.instance
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.mitsuki.jlpt.app.*
+import com.mitsuki.jlpt.app.constants.Constants
 import com.mitsuki.jlpt.app.constants.WORD_KIND
 import com.mitsuki.jlpt.app.hint.showOperationResult
 import com.mitsuki.jlpt.app.hint.toastShort
@@ -38,6 +40,8 @@ class MainActivity : BaseActivity<MainViewModel>() {
     private val itemTouchHelper: ItemTouchHelper by instance()
     private val swipeDeleteEvent: SwipeDeleteEvent by instance()
 
+    private val simpleRequest :SimpleRequest by instance()
+
     private val speaker: Speaker = TTSFactory.create(MyApplication.INSTANCE, TTSFactory.NATIVE)
 
     override fun initView(savedInstanceState: Bundle?) = R.layout.activity_main
@@ -47,6 +51,10 @@ class MainActivity : BaseActivity<MainViewModel>() {
         initComponent()
 
         switchMode(getInt(WORD_KIND))
+
+        simpleRequest.run(Constants.UPDATE_INFO){
+            Log.e("asdfa", it)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
