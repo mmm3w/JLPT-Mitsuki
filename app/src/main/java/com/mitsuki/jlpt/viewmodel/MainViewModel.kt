@@ -71,9 +71,14 @@ class MainViewModel(private val model: MainModel) : BaseViewModel() {
             if (lastModify == 0) eventSubject.onNext(MainEvent.SCROLL_TO_TOP)
         }
     }
+
+    fun checkWordVerison(){
+        model.requestVersion().filter { it!=-1 }.autoDisposable(this)
+            .subscribe { eventSubject.onNext(MainEvent.NEW_WORD_VERSION) }
+    }
 }
 
 enum class MainEvent{
-    SHOW_SNACKBAR, SCROLL_TO_TOP, EXPAND_APP_BAR
+    SHOW_SNACKBAR, SCROLL_TO_TOP, EXPAND_APP_BAR, NEW_WORD_VERSION
 }
 

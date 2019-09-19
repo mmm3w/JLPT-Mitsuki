@@ -21,9 +21,7 @@ const val MAIN_MODULE_TAG = "MAIN_MODULE_TAG"
 val mainKodeinModule = Kodein.Module(MAIN_MODULE_TAG) {
     //Model
     bind<MainModel>() with scoped<FragmentActivity>(AndroidLifecycleScope).singleton {
-        MainModel(
-            db = instance(), config = instance()
-        )
+        MainModel(simpleRequest = instance(), db = instance(), config = instance())
     }
     //ViewModel
     bind<MainViewModel>() with scoped<FragmentActivity>(AndroidLifecycleScope).singleton {
@@ -36,15 +34,13 @@ val mainKodeinModule = Kodein.Module(MAIN_MODULE_TAG) {
     bind<WordAdapter>() with scoped<FragmentActivity>(AndroidLifecycleScope).singleton { WordAdapter() }
     //paging list config
     bind<PagedList.Config>() with scoped<FragmentActivity>(AndroidLifecycleScope).singleton {
-        PagedList.Config.Builder()
-            .setInitialLoadSizeHint(10)
-            .setPageSize(10)
-            .setPrefetchDistance(10)
-            .setEnablePlaceholders(false)
-            .build()
+        PagedList.Config.Builder().setInitialLoadSizeHint(10).setPageSize(10)
+            .setPrefetchDistance(10).setEnablePlaceholders(false).build()
     }
 
     //ItemTouchHelper
     bind<SwipeDeleteEvent>() with scoped<FragmentActivity>(AndroidLifecycleScope).singleton { SwipeDeleteEvent() }
-    bind<ItemTouchHelper>() with scoped<FragmentActivity>(AndroidLifecycleScope).singleton { ItemTouchHelper(instance()) }
+    bind<ItemTouchHelper>() with scoped<FragmentActivity>(AndroidLifecycleScope).singleton {
+        ItemTouchHelper(instance())
+    }
 }

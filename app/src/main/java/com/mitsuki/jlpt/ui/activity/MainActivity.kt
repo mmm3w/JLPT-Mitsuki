@@ -40,8 +40,6 @@ class MainActivity : BaseActivity<MainViewModel>() {
     private val itemTouchHelper: ItemTouchHelper by instance()
     private val swipeDeleteEvent: SwipeDeleteEvent by instance()
 
-    private val simpleRequest :SimpleRequest by instance()
-
     private val speaker: Speaker = TTSFactory.create(MyApplication.INSTANCE, TTSFactory.NATIVE)
 
     override fun initView(savedInstanceState: Bundle?) = R.layout.activity_main
@@ -51,10 +49,6 @@ class MainActivity : BaseActivity<MainViewModel>() {
         initComponent()
 
         switchMode(getInt(WORD_KIND))
-
-        simpleRequest.run(Constants.UPDATE_INFO){
-            Log.e("asdfa", it)
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -105,6 +99,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
             MainEvent.SHOW_SNACKBAR -> showSnackbar()
             MainEvent.SCROLL_TO_TOP -> wordList.smoothScrollToPosition(0)
             MainEvent.EXPAND_APP_BAR -> appBar.setExpanded(true)
+            MainEvent.NEW_WORD_VERSION -> toastShort { "有新版本单词" }
         }
     }
 
