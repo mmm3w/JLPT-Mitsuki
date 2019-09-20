@@ -19,7 +19,9 @@ const val SETTING_MODULE_TAG = "SETTING_MODULE_TAG"
 val settingKodeinModule = Kodein.Module(SETTING_MODULE_TAG) {
     //Model
     bind<SettingModel>() with scoped<FragmentActivity>(AndroidLifecycleScope).singleton {
-        SettingModel(instance())
+        SettingModel(
+            spRepository = instance(), simpleRequest = instance(), db = instance()
+        )
     }
     //ViewModel
     bind<SettingViewModel>() with scoped<FragmentActivity>(AndroidLifecycleScope).singleton {
@@ -28,6 +30,4 @@ val settingKodeinModule = Kodein.Module(SETTING_MODULE_TAG) {
         ).get(SettingViewModel::class.java)
     }
 
-    //Adapter
-    bind<SettingAdapter>() with scoped<FragmentActivity>(AndroidLifecycleScope).singleton { SettingAdapter() }
 }

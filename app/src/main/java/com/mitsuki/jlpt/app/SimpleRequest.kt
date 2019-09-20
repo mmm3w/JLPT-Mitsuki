@@ -24,15 +24,15 @@ class SimpleRequest {
         })
     }
 
-    fun requestWord() {
+    fun requestWord(callback: (isSuccess: Boolean, str: String) -> Unit) {
         val request = Request.Builder().url(Constants.UPDATE_FILE).build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-
+                callback.invoke(false, e.message ?: "")
             }
 
             override fun onResponse(call: Call, response: Response) {
-
+                callback.invoke(true, response.body?.string() ?: "")
             }
         })
     }

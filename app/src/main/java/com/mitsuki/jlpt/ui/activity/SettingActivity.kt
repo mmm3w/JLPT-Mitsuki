@@ -6,19 +6,15 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
-import com.afollestad.materialdialogs.list.listItems
-import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.mitsuki.jlpt.R
-import com.mitsuki.jlpt.app.constants.TTS_KIND
-import com.mitsuki.jlpt.app.getInt
 import com.mitsuki.jlpt.app.hint.toastShort
-import com.mitsuki.jlpt.app.putInt
-import com.mitsuki.jlpt.app.tts.TTSFactory
 import com.mitsuki.jlpt.base.BaseActivity
 import com.mitsuki.jlpt.entity.Setting
 import com.mitsuki.jlpt.module.settingKodeinModule
 import com.mitsuki.jlpt.ui.adapter.SettingAdapter
+import com.mitsuki.jlpt.viewmodel.SettingState
 import com.mitsuki.jlpt.viewmodel.SettingViewModel
+import com.mitsuki.jlpt.viewmodel.SettingViewState
 import com.uber.autodispose.autoDisposable
 import kotlinx.android.synthetic.main.activity_main.toolbar
 import kotlinx.android.synthetic.main.activity_setting.*
@@ -31,13 +27,17 @@ class SettingActivity : BaseActivity<SettingViewModel>() {
     override val kodeinModule: Kodein.Module = settingKodeinModule
 
     override val viewModel: SettingViewModel by instance()
-    private val mAdapter: SettingAdapter by instance()
+    private val mAdapter = SettingAdapter()
+
+    val dialog by lazy { MaterialDialog(this) }
 
     override fun initView(savedInstanceState: Bundle?) = R.layout.activity_setting
 
     override fun initData(savedInstanceState: Bundle?) {
         initToolbar()
         initComponent()
+
+        viewModel.observeEvent().autoDisposable(scopeProvider).subscribe(this::onUpdateEvent)
     }
 
     private fun initToolbar() {
@@ -55,24 +55,37 @@ class SettingActivity : BaseActivity<SettingViewModel>() {
 
     private fun onSettingEvent(setting: Setting) {
         when (setting.text) {
-            "更新词表" -> toastShort { "开发中" }
-            "TTS设置" -> toastShort { "开发中" }
+            "更新词表" -> viewModel.updateWords()
+            "TTS设置" -> startActivity(Intent(this, TTSSettingActivity::class.java))
             "数据调试" -> startActivity(Intent(this, DataCheckActivity::class.java))
         }
     }
 
-    private fun showTTSDialog() {
-        //TODO:待完善，在Google translate TTS实现之前暂时不使用该功能
-        //        MaterialDialog(this).show {
-        //            title(text = "TTS设置")
-        //            listItemsSingleChoice(
-        //                items = TTSFactory.list(),
-        //                initialSelection = TTSFactory.list().indexOf(TTSFactory.ttsStr(getInt(TTS_KIND))) + 1
-        //            ) { _: MaterialDialog, _: Int, str: CharSequence ->
-        //                putInt(TTS_KIND, TTSFactory.ttsInt(str.toString()))
-        //            }
-        //            lifecycleOwner(this@SettingActivity)
-        //        }
+    private fun onUpdateEvent(state: SettingViewState) {
+        when (state.state) {
+            SettingState.REQUEST_VERSION -> dialog.show {
+                message(text = "获取版本中...")
+                lifecycleOwner(this@SettingActivity)
+            }
+            SettingState.HAVE_NEW_VERSION -> dialog.show {
+                message(text = "获取数据中...")
+                lifecycleOwner(this@SettingActivity)
+            }
+            SettingState.NO_NEW_VERSION -> dialog.dismiss()
+            SettingState.DOWNLOAD_DATA_ERROR -> {
+                toastShort { "数据获取失败:${state.msg}" }
+                dialog.dismiss()
+            }
+            SettingState.DOWNLOAD_DATA_SUCCESS -> dialog.show {
+                message(text = "更新获取数据中...")
+                lifecycleOwner(this@SettingActivity)
+            }
+            SettingState.UPDATE_DATABASE_SUCCESS -> {
+                toastShort { "数据更新成功" }
+                dialog.dismiss()
+            }
+        }
     }
+
 
 }

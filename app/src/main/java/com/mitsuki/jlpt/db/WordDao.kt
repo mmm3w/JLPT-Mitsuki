@@ -1,10 +1,7 @@
 package com.mitsuki.jlpt.db
 
 import androidx.paging.DataSource
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.mitsuki.jlpt.entity.NumeralSort
 import com.mitsuki.jlpt.entity.Word
 
@@ -15,6 +12,9 @@ interface WordDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertSort(sort: List<NumeralSort>)
+
+    @Update
+    fun updateWords(words: List<Word>)
 
     @Query("SELECT * FROM numeral_sort")
     fun queryNumeralSort(): List<NumeralSort>
