@@ -71,18 +71,21 @@ class SettingActivity : BaseActivity<SettingViewModel>() {
                 message(text = "获取数据中...")
                 lifecycleOwner(this@SettingActivity)
             }
-            SettingState.NO_NEW_VERSION -> dialog.dismiss()
-            SettingState.DOWNLOAD_DATA_ERROR -> {
-                toastShort { "数据获取失败:${state.msg}" }
+            SettingState.NO_NEW_VERSION -> {
                 dialog.dismiss()
+                toastShort { "已经是最新数据" }
+            }
+            SettingState.DOWNLOAD_DATA_ERROR -> {
+                dialog.dismiss()
+                toastShort { "数据获取失败:${state.msg}" }
             }
             SettingState.DOWNLOAD_DATA_SUCCESS -> dialog.show {
                 message(text = "更新获取数据中...")
                 lifecycleOwner(this@SettingActivity)
             }
             SettingState.UPDATE_DATABASE_SUCCESS -> {
-                toastShort { "数据更新成功" }
                 dialog.dismiss()
+                toastShort { "数据更新成功" }
             }
         }
     }
