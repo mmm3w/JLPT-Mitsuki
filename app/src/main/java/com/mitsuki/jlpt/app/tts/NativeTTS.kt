@@ -31,6 +31,12 @@ class NativeTTS private constructor(context: Context) : Speaker {
         }
     }
 
+    override fun release() {
+        textToSpeech?.stop()
+        textToSpeech = null
+    }
+
+
     companion object {
         fun createSpeaker(context: Context): NativeTTS {
             return NativeTTS(context)

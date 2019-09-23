@@ -17,7 +17,9 @@ object TTSFactory {
         }
     }
 
-    fun list() = arrayListOf(NATIVE_STR, GOOGLE_TRANSLATE_STR)
+//    fun list() = arrayListOf(NATIVE_STR, GOOGLE_TRANSLATE_STR)
+    //目前只提供一种tts方式
+    fun list() = arrayListOf(NATIVE_STR)
 
     fun ttsStr(tts: Int): String {
         return when (tts) {

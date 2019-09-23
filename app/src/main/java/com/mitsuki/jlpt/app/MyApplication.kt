@@ -44,7 +44,7 @@ class MyApplication : Application(), KodeinAware {
         }
 
         //setting Repository
-        bind<SPRepository>() with singleton { SPRepository.getInstance(instance()) }
+        bind<SPRepository>() with singleton { SPRepository.getInstance(instance(SHARED_PREFERENCES_NAME)) }
     }
 
     override fun onCreate() {

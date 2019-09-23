@@ -13,6 +13,7 @@ import com.mitsuki.jlpt.entity.Setting
 import com.uber.autodispose.autoDisposable
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
+import java.util.concurrent.TimeUnit
 
 class SettingAdapter : BaseAdapter<Setting, SettingAdapter.MyViewHolder>() {
 
@@ -23,11 +24,11 @@ class SettingAdapter : BaseAdapter<Setting, SettingAdapter.MyViewHolder>() {
     override fun onMyBindViewHolder(t: MyViewHolder, i: Int) {
         t.settingName.text = getItem(i).text
         t.settingDescription.text = getItem(i).getExtString()
-        t.itemView.clicksThrottleFirst().autoDisposable(t).subscribe { subject.onNext(getItem(i)) }
+        t.itemView.setOnClickListener { subject.onNext(getItem(i)) }
     }
 
     fun getItemClickEvent(): Observable<Setting> {
-        return subject.hide()
+        return subject.throttleFirst(500, TimeUnit.MILLISECONDS).hide()
     }
 
     inner class MyViewHolder(parent: ViewGroup) : AutoDisposeViewHolder(

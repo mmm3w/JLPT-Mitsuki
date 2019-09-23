@@ -50,7 +50,7 @@ class SettingActivity : BaseActivity<SettingViewModel>() {
         mAdapter.addAll(viewModel.linkSetting())
         settingList.layoutManager = LinearLayoutManager(this)
         settingList.adapter = mAdapter
-        mAdapter.getItemClickEvent().autoDisposable(scopeProvider).subscribe { onSettingEvent(it) }
+        mAdapter.getItemClickEvent().autoDisposable(scopeProvider).subscribe(this::onSettingEvent)
     }
 
     private fun onSettingEvent(setting: Setting) {

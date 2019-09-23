@@ -24,10 +24,10 @@ fun Context.putString(key: String, value: String) {
     editor.commit()
 }
 
-fun Context.getString(key: String): String {
+fun Context.getString(key: String, defaultValue: String): String {
     return getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE).getString(
-        key, ""
-    ) ?: ""
+        key, defaultValue
+    ) ?: defaultValue
 }
 
 @SuppressLint("ApplySharedPref")
@@ -46,9 +46,9 @@ fun Context.putInt(key: String, value: Int) {
     editor.commit()
 }
 
-fun Context.getInt(key: String): Int {
+fun Context.getInt(key: String, defaultValue: Int): Int {
     return getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE).getInt(
-        key, Int.MIN_VALUE
+        key, defaultValue
     )
 }
 /**************************************************************************************************/

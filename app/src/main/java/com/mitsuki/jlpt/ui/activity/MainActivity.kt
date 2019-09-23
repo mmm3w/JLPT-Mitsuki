@@ -20,6 +20,7 @@ import com.mitsuki.jlpt.app.hint.toastLong
 import com.mitsuki.jlpt.app.hint.toastShort
 import com.mitsuki.jlpt.app.kind.Kind
 import com.mitsuki.jlpt.app.kind.getKind
+import com.mitsuki.jlpt.app.tts.SpeakUtils
 import com.mitsuki.jlpt.ui.widget.smoothscroll.SmoothScrollLayoutManager
 import com.mitsuki.jlpt.app.tts.Speaker
 import com.mitsuki.jlpt.app.tts.TTSFactory
@@ -42,15 +43,13 @@ class MainActivity : BaseActivity<MainViewModel>() {
     private val itemTouchHelper: ItemTouchHelper by instance()
     private val swipeDeleteEvent: SwipeDeleteEvent by instance()
 
-    private val speaker: Speaker = TTSFactory.create(MyApplication.INSTANCE, TTSFactory.NATIVE)
-
     override fun initView(savedInstanceState: Bundle?) = R.layout.activity_main
 
     override fun initData(savedInstanceState: Bundle?) {
         initToolbar()
         initComponent()
 
-        switchMode(getInt(WORD_KIND))
+        switchMode(getInt(WORD_KIND, Integer.MIN_VALUE))
 
         viewModel.checkWordVersion()
     }
@@ -90,7 +89,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
             .subscribe { viewModel.changeWordState(it, mAdapter.getItemForOut(it)) }
 
         mAdapter.parentSubject.autoDisposable(scopeProvider)
-            .subscribe { speaker.speak(it.cn, it.kana) { toastShort { it } } }
+            .subscribe { SpeakUtils.speak(this, it.cn, it.kana) { toastShort { it } } }
 
         viewModel.observeData().autoDisposable(scopeProvider)
             .subscribe { mAdapter.submitList(it) { viewModel.checkListStatus() } }

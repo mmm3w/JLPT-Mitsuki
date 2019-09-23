@@ -19,3 +19,8 @@ class DataCheckViewModelFactory(private val model: DataCheckModel) : ViewModelPr
 class NumeralViewModelFactory(private val model: NumeralModel) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T = NumeralViewModel(model) as T
 }
+class TTSSettingViewModelFactory(private val model: TTSSettingModel) : ViewModelProvider.Factory {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T = TTSSettingViewModel(model) as T
+}
+
+

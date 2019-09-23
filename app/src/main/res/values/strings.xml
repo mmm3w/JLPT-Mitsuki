@@ -3,4 +3,6 @@
     <string name="navigation_drawer_open">open</string>
     <string name="navigation_drawer_close">close</string>
 
+    <string name="tts_sample">こちらが発声のサンプルです</string>
+
 </resources>

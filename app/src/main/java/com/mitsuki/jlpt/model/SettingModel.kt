@@ -18,7 +18,7 @@ class SettingModel(
     private val db: MyDataBase
 ) : BaseModel() {
     fun getSetting(): List<Setting> {
-        val ttsSetting = Setting("TTS设置", "TTS方式选择、TTS设置、TTS Sample")
+        val ttsSetting = Setting("TTS设置", "TTS方式选择、TTS设置、TTS发声示例")
         val updateSetting = Setting("更新词表", "联网更新所有单词表")
         val dataDebugSetting = Setting("数据调试", "测试功能")
         return arrayListOf(updateSetting, ttsSetting, dataDebugSetting)

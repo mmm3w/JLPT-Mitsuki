@@ -14,6 +14,9 @@ class GoogleTranslateTTS private constructor(context: Context) : Speaker {
         callback.invoke("暂不支持此功能")
     }
 
+    override fun release() {
+    }
+
     companion object {
         fun createSpeaker(context: Context): GoogleTranslateTTS {
             return GoogleTranslateTTS(context)
