@@ -1,8 +1,7 @@
 <resources>
-    <string name="app_name">JLPT单词</string>
+    <string name="app_name">多记词少偷懒</string>
     <string name="navigation_drawer_open">open</string>
     <string name="navigation_drawer_close">close</string>
 
     <string name="tts_sample">こちらが発声のサンプルです</string>
-
 </resources>
