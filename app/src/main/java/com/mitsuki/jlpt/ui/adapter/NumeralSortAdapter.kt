@@ -3,15 +3,10 @@ package com.mitsuki.jlpt.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.navigation.Navigation
 import com.mitsuki.jlpt.R
-import com.mitsuki.jlpt.app.clicksThrottleFirst
 import com.mitsuki.jlpt.base.AutoDisposeViewHolder
 import com.mitsuki.jlpt.base.BaseAdapter
 import com.mitsuki.jlpt.entity.NumeralSort
-import com.mitsuki.jlpt.entity.Setting
-import com.mitsuki.jlpt.entity.Word
-import com.uber.autodispose.autoDisposable
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit

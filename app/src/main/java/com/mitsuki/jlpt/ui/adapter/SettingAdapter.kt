@@ -4,13 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import com.mitsuki.jlpt.R
-import com.mitsuki.jlpt.app.clicksThrottleFirst
 import com.mitsuki.jlpt.base.AutoDisposeViewHolder
 import com.mitsuki.jlpt.base.BaseAdapter
 import com.mitsuki.jlpt.entity.Setting
-import com.uber.autodispose.autoDisposable
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
