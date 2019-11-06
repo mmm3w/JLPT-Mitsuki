@@ -27,6 +27,7 @@
         <activity android:name=".ui.activity.DataCheckActivity" />
         <activity android:name=".ui.activity.NumeralActivity"/>
         <activity android:name=".ui.activity.TTSSettingActivity"/>
+        <activity android:name=".ui.activity.TestingActivity"/>
     </application>
 
 </manifest>

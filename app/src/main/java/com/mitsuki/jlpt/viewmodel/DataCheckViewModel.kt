@@ -18,13 +18,15 @@ class DataCheckViewModel(private val model: DataCheckModel) : BaseViewModel() {
     fun checkDataNumber() {
         Completable.fromAction {}.observeOn(Schedulers.io()).autoDisposable(this)
             .subscribe {
-                subject.onNext(DataCheckViewState(Kind.N1, model.getWordNumber(Kind.N1)))
-                subject.onNext(DataCheckViewState(Kind.N2, model.getWordNumber(Kind.N2)))
-                subject.onNext(DataCheckViewState(Kind.N3, model.getWordNumber(Kind.N3)))
-                subject.onNext(DataCheckViewState(Kind.N4, model.getWordNumber(Kind.N4)))
-                subject.onNext(DataCheckViewState(Kind.N5, model.getWordNumber(Kind.N5)))
-                subject.onNext(DataCheckViewState(Kind.NUMERAL, model.getWordNumber(Kind.NUMERAL)))
-                subject.onNext(DataCheckViewState(Kind.INVISIBLE, model.getInvisibleNumber()))
+                subject.apply {
+                    onNext(DataCheckViewState(Kind.N1, model.getWordNumber(Kind.N1)))
+                    onNext(DataCheckViewState(Kind.N2, model.getWordNumber(Kind.N2)))
+                    onNext(DataCheckViewState(Kind.N3, model.getWordNumber(Kind.N3)))
+                    onNext(DataCheckViewState(Kind.N4, model.getWordNumber(Kind.N4)))
+                    onNext(DataCheckViewState(Kind.N5, model.getWordNumber(Kind.N5)))
+                    onNext(DataCheckViewState(Kind.NUMERAL, model.getWordNumber(Kind.NUMERAL)))
+                    onNext(DataCheckViewState(Kind.INVISIBLE, model.getInvisibleNumber()))
+                }
             }
     }
 }

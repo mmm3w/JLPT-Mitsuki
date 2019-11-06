@@ -34,8 +34,7 @@ abstract class BaseActivity<T : BaseViewModel> : AppCompatActivity(), IActivity,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         try {
-            val layoutID = initView(savedInstanceState)
-            if (layoutID != 0) setContentView(layoutID)
+            initView(savedInstanceState).apply { if (this != 0) setContentView(this) }
         } catch (e: Exception) {
             if (e is InflateException) throw e
             e.printStackTrace()

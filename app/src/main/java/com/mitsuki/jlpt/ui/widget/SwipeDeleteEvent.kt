@@ -1,5 +1,6 @@
 package com.mitsuki.jlpt.ui.widget
 
+import android.annotation.SuppressLint
 import android.graphics.Canvas
 import android.view.Gravity
 import android.widget.FrameLayout
@@ -15,7 +16,6 @@ import kotlin.math.abs
 
 class SwipeDeleteEvent : ItemTouchHelper.Callback() {
 
-    //    val path = Path()
     private val maxRadius = 24f
 
     val onSwipe: PublishSubject<Int> = PublishSubject.create()
@@ -37,10 +37,12 @@ class SwipeDeleteEvent : ItemTouchHelper.Callback() {
 
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
-        viewHolder.itemView.findViewById<ConstraintLayout>(R.id.text_bg).translationX = 0f
-        viewHolder.itemView.findViewById<ConstraintLayout>(R.id.text_bg).translationZ = 0f
+        viewHolder.itemView.findViewById<ConstraintLayout>(R.id.text_bg)?.apply {
+            translationX = 0f
+            translationZ = 0f
+            clipToOutline = false
+        }
         viewHolder.itemView.translationZ = 0f
-        viewHolder.itemView.findViewById<ConstraintLayout>(R.id.text_bg).clipToOutline = false
     }
 
 
@@ -53,21 +55,25 @@ class SwipeDeleteEvent : ItemTouchHelper.Callback() {
         actionState: Int,
         isCurrentlyActive: Boolean
     ) {
-        val fp = viewHolder.itemView.findViewById<ImageView>(R.id.text_mark).layoutParams as FrameLayout.LayoutParams
-        if (dX > 0) {
-            fp.gravity = Gravity.CENTER_VERTICAL or Gravity.LEFT
-        } else if (dX < 0) {
-            fp.gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT
+        viewHolder.itemView.findViewById<ImageView>(R.id.text_mark)?.apply {
+            layoutParams = (layoutParams as FrameLayout.LayoutParams).apply {
+                if (dX > 0) {
+                    gravity = Gravity.CENTER_VERTICAL or Gravity.START
+                } else if (dX < 0) {
+                    gravity = Gravity.CENTER_VERTICAL or Gravity.END
+                }
+            }
         }
-        viewHolder.itemView.findViewById<ImageView>(R.id.text_mark).layoutParams = fp
 
-        viewHolder.itemView.findViewById<ConstraintLayout>(R.id.text_bg).translationX = dX
-        viewHolder.itemView.findViewById<ConstraintLayout>(R.id.text_bg).translationZ = if (dX == 0f) 0f else 4f
-        viewHolder.itemView.translationZ = if (dX == 0f) 0f else 6f
-        (abs(dX / viewHolder.itemView.width.toFloat()) * 2 * maxRadius).also {
-            viewHolder.itemView.findViewById<ConstraintLayout>(R.id.text_bg).outlineProvider =
-                MyViewOutlineProvider(if (it > maxRadius) maxRadius else it)
-            viewHolder.itemView.findViewById<ConstraintLayout>(R.id.text_bg).clipToOutline = true
+        viewHolder.itemView.findViewById<ConstraintLayout>(R.id.text_bg)?.apply {
+            translationX = dX
+            translationZ = if (dX == 0f) 0f else 4f
+            (abs(dX / viewHolder.itemView.width.toFloat()) * 2 * maxRadius).also {
+                outlineProvider = MyViewOutlineProvider(if (it > maxRadius) maxRadius else it)
+                clipToOutline = true
+            }
         }
+
+        viewHolder.itemView.translationZ = if (dX == 0f) 0f else 6f
     }
 }

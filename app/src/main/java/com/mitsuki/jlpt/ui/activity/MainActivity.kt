@@ -69,7 +69,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
             R.id.nav_n5 -> switchMode(Kind.N5)
             R.id.nav_invisible -> switchMode(Kind.INVISIBLE)
             R.id.nav_numeral -> startActivity(Intent(this, NumeralActivity::class.java))
-            R.id.nav_test -> toastShort { "开发中" }
+            R.id.nav_test -> startActivity(Intent(this, TestingActivity::class.java))
             R.id.nav_setting -> startActivity(Intent(this, SettingActivity::class.java))
         }
         return false
@@ -101,7 +101,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
     private fun onViewModelEvent(event: MainEvent) {
         when (event) {
             MainEvent.SHOW_SNACKBAR -> showSnackbar()
-            MainEvent.SCROLL_TO_TOP -> wordList.smoothScrollToPosition(0)
+//            MainEvent.SCROLL_TO_TOP -> wordList.smoothScrollToPosition(0) //TODO:有bug，暂时禁用
             MainEvent.EXPAND_APP_BAR -> appBar.setExpanded(true)
             MainEvent.NEW_WORD_VERSION -> toastShort { "有新版本单词" }
         }

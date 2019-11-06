@@ -86,9 +86,10 @@ class TTSSettingActivity : BaseActivity<TTSSettingViewModel>() {
     }
 
     private fun launchTTSSetting() {
-        val intent = Intent()
-        intent.action = "com.android.settings.TTS_SETTINGS"
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        this.startActivity(intent)
+        Intent().apply {
+            action = "com.android.settings.TTS_SETTINGS"
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(this)
+        }
     }
 }
