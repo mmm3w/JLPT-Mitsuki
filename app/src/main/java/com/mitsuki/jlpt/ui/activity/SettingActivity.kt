@@ -11,7 +11,7 @@ import com.mitsuki.jlpt.app.hint.toastShort
 import com.mitsuki.jlpt.base.BaseActivity
 import com.mitsuki.jlpt.entity.Setting
 import com.mitsuki.jlpt.module.settingKodeinModule
-import com.mitsuki.jlpt.ui.adapter.SettingAdapter
+import com.mitsuki.jlpt.ui.adapter.DefaultSettingAdapter
 import com.mitsuki.jlpt.viewmodel.SettingState
 import com.mitsuki.jlpt.viewmodel.SettingViewModel
 import com.mitsuki.jlpt.viewmodel.SettingViewState
@@ -27,9 +27,9 @@ class SettingActivity : BaseActivity<SettingViewModel>() {
     override val kodeinModule: Kodein.Module = settingKodeinModule
 
     override val viewModel: SettingViewModel by instance()
-    private val mAdapter = SettingAdapter()
+    private val mAdapter = DefaultSettingAdapter()
 
-    val dialog by lazy { MaterialDialog(this) }
+    private val dialog by lazy { MaterialDialog(this) }
 
     override fun initView(savedInstanceState: Bundle?) = R.layout.activity_setting
 
@@ -54,10 +54,10 @@ class SettingActivity : BaseActivity<SettingViewModel>() {
     }
 
     private fun onSettingEvent(setting: Setting) {
-        when (setting.text) {
-            "更新词表" -> viewModel.updateWords()
-            "TTS设置" -> startActivity(Intent(this, TTSSettingActivity::class.java))
-            "数据调试" -> startActivity(Intent(this, DataCheckActivity::class.java))
+        when (setting.type) {
+            Setting.SETTING_UPDATE_WORD -> viewModel.updateWords()
+            Setting.SETTING_TTS_ALL -> startActivity(Intent(this, TTSSettingActivity::class.java))
+            Setting.SETTING_DATA_DEBUG -> startActivity(Intent(this, DataCheckActivity::class.java))
         }
     }
 

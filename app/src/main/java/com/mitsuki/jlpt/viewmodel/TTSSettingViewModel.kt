@@ -1,6 +1,7 @@
 package com.mitsuki.jlpt.viewmodel
 
 import com.mitsuki.jlpt.app.tts.SpeakUtils
+import com.mitsuki.jlpt.app.tts.TTSFactory
 import com.mitsuki.jlpt.base.BaseViewModel
 import com.mitsuki.jlpt.model.TTSSettingModel
 import io.reactivex.Observable
@@ -21,5 +22,14 @@ class TTSSettingViewModel(private val model: TTSSettingModel) : BaseViewModel() 
         model.saveTTSKind(kind)
         SpeakUtils.resetSpeaker()
         getSetting()
+    }
+
+    fun onTTSSelectEvent() {
+        eventSubject.onNext(
+            TTSSettingViewState(
+                ttsList = model.obtainTTS(),
+                ttsSelection = model.obtainTTS().indexOf(TTSFactory.ttsStr(model.obtainTTSKind()))
+            )
+        )
     }
 }

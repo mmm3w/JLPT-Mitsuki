@@ -14,7 +14,7 @@ import com.mitsuki.jlpt.app.tts.TTSFactory
 import com.mitsuki.jlpt.base.BaseActivity
 import com.mitsuki.jlpt.entity.Setting
 import com.mitsuki.jlpt.module.ttsSettingKodeinModule
-import com.mitsuki.jlpt.ui.adapter.SettingAdapter
+import com.mitsuki.jlpt.ui.adapter.DefaultSettingAdapter
 import com.mitsuki.jlpt.viewmodel.TTSSettingViewModel
 import com.mitsuki.jlpt.viewmodel.TTSSettingViewState
 import com.uber.autodispose.autoDisposable
@@ -28,7 +28,7 @@ class TTSSettingActivity : BaseActivity<TTSSettingViewModel>() {
     override val kodeinModule: Kodein.Module = ttsSettingKodeinModule
     override val viewModel: TTSSettingViewModel by instance()
 
-    private val mAdapter = SettingAdapter()
+    private val mAdapter = DefaultSettingAdapter()
 
     override fun initView(savedInstanceState: Bundle?) = R.layout.activity_tts_setting
 
@@ -40,7 +40,10 @@ class TTSSettingActivity : BaseActivity<TTSSettingViewModel>() {
 
         viewModel.getSetting()
     }
-
+    /**********************************************************************************************/
+    /**
+     * 自用的方法
+     */
     private fun initToolbar() {
         setSupportActionBar(toolbar)
         title = "TTS设置"
@@ -53,31 +56,39 @@ class TTSSettingActivity : BaseActivity<TTSSettingViewModel>() {
         mAdapter.getItemClickEvent().autoDisposable(scopeProvider).subscribe(this::onSettingEvent)
     }
 
+    /**********************************************************************************************/
+    /**
+     * 订阅分发
+     */
     private fun onViewModelEvent(viewState: TTSSettingViewState) {
         viewState.items?.let {
             mAdapter.addAll(it)
             mAdapter.notifyDataSetChanged()
         }
-    }
 
-    private fun onSettingEvent(setting: Setting) {
-        when (setting.text) {
-            "TTS选择" -> showTTSSelectDialog(setting.ext as Int)
-            "TTS设置" -> launchTTSSetting()
-            "TTS测试" -> SpeakUtils.speak(
-                this,
-                "ttsSample",
-                resources.getString(R.string.tts_sample)
-            ) { toastShort { it } }
+        viewState.ttsList?.apply {
+            showTTSSelectDialog(viewState.ttsSelection, this)
         }
     }
 
-    private fun showTTSSelectDialog(kind: Int) {
+    private fun onSettingEvent(setting: Setting) {
+        when (setting.type) {
+            Setting.SETTING_TTS_SELECT -> viewModel.onTTSSelectEvent()
+            Setting.SETTING_TTS -> launchTTSSetting()
+            Setting.SETTING_TTS_TESTING -> ttsSample()
+        }
+    }
+
+    /**********************************************************************************************/
+    /**
+     * 针对订阅事件的处理
+     */
+    private fun showTTSSelectDialog(selection: Int, list: ArrayList<String>) {
         MaterialDialog(this).show {
             title(text = "TTS选择")
             listItemsSingleChoice(
-                items = TTSFactory.list(),
-                initialSelection = TTSFactory.list().indexOf(TTSFactory.ttsStr(kind))
+                items = list,
+                initialSelection = selection
             ) { _: MaterialDialog, _: Int, str: CharSequence ->
                 viewModel.replaceTTS(TTSFactory.ttsInt(str.toString()))
             }
@@ -91,5 +102,11 @@ class TTSSettingActivity : BaseActivity<TTSSettingViewModel>() {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(this)
         }
+    }
+
+    private fun ttsSample() {
+        SpeakUtils.speak(
+            this, "ttsSample", resources.getString(R.string.tts_sample)
+        ) { toastShort { it } }
     }
 }

@@ -6,10 +6,27 @@
 
     <include layout="@layout/include_title" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <Switch
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="问"/>
+        android:padding="16dp"
+        android:text="是否包含已隐藏单词" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="早饭"
+        android:textColor="@color/_333333"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
 
 
 </LinearLayout>

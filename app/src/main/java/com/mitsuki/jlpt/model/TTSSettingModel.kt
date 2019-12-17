@@ -6,17 +6,22 @@ import com.mitsuki.jlpt.entity.Setting
 
 class TTSSettingModel(private val spRepository: SPRepository) : BaseModel() {
     fun getSetting(): List<Setting> {
-        val ttsSelect = object : Setting("TTS选择", spRepository.ttsKind) {
-            override fun getExtString(): String {
-                return TTSFactory.ttsStr(spRepository.ttsKind)
-            }
-        }
-        val ttsSetting = Setting("TTS设置", "前往系统TTS设置界面")
-        val ttsTest = Setting("TTS测试", "播放TTS示例")
-        return arrayListOf(ttsSelect, ttsSetting, ttsTest)
+        return arrayListOf(
+            Setting.create(
+                type = Setting.SETTING_TTS_SELECT,
+                desc = TTSFactory.ttsStr(spRepository.ttsKind),
+                ext = spRepository.ttsKind
+            ),
+            Setting.create(type = Setting.SETTING_TTS),
+            Setting.create(type = Setting.SETTING_TTS_TESTING)
+        )
     }
 
-    fun saveTTSKind(kind:Int){
+    fun saveTTSKind(kind: Int) {
         spRepository.ttsKind = kind
     }
+
+    fun obtainTTSKind() = spRepository.ttsKind
+
+    fun obtainTTS() = TTSFactory.list()
 }

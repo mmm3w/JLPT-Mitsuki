@@ -39,7 +39,8 @@ abstract class BaseAdapter<B, T : RecyclerView.ViewHolder> :
     abstract fun onMyBindViewHolder(t: T, i: Int)
 
     fun onCreateEmptyViewHolder(viewGroup: ViewGroup, i: Int): RecyclerView.ViewHolder {
-        val emptyView = LayoutInflater.from(viewGroup.context).inflate(emptyLayout, viewGroup, false)
+        val emptyView =
+            LayoutInflater.from(viewGroup.context).inflate(emptyLayout, viewGroup, false)
         return object : RecyclerView.ViewHolder(emptyView) {}
     }
 
@@ -47,10 +48,13 @@ abstract class BaseAdapter<B, T : RecyclerView.ViewHolder> :
 
     }
 
+    fun getMyItemViewType(position: Int): Int {
+        return 0
+    }
+
     override fun getItemViewType(position: Int): Int {
-        return if (mData.size <= 0 && useEmpty && emptyLayout != -1) VIEW_TYPE_EMPTY else super.getItemViewType(
-            position
-        )
+        return if (mData.size <= 0 && useEmpty && emptyLayout != -1) VIEW_TYPE_EMPTY
+        else getMyItemViewType(position)
     }
 
     fun setEmptyLayout(emptyLayout: Int) {

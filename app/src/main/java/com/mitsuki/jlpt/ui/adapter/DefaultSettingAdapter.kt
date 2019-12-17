@@ -2,7 +2,6 @@ package com.mitsuki.jlpt.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.TextView
 import com.mitsuki.jlpt.R
 import com.mitsuki.jlpt.base.AutoDisposeViewHolder
@@ -12,15 +11,15 @@ import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
-class SettingAdapter : BaseAdapter<Setting, SettingAdapter.MyViewHolder>() {
+class DefaultSettingAdapter : BaseAdapter<Setting, DefaultSettingAdapter.MyViewHolder>() {
 
     private val subject: PublishSubject<Setting> by lazy { PublishSubject.create<Setting>() }
 
     override fun onMyCreateViewHolder(viewGroup: ViewGroup, i: Int) = MyViewHolder(viewGroup)
 
     override fun onMyBindViewHolder(t: MyViewHolder, i: Int) {
-        t.settingName.text = getItem(i).text
-        t.settingDescription.text = getItem(i).getExtString()
+        t.settingName.text = getItem(i).name
+        t.settingDescription.text = getItem(i).description
         t.itemView.setOnClickListener { subject.onNext(getItem(i)) }
     }
 
@@ -33,7 +32,6 @@ class SettingAdapter : BaseAdapter<Setting, SettingAdapter.MyViewHolder>() {
     ) {
         val settingName: TextView = itemView.findViewById(R.id.settingName)
         val settingDescription: TextView = itemView.findViewById(R.id.settingDescription)
-        val settingExt: FrameLayout = itemView.findViewById(R.id.settingExt)
     }
 }
 

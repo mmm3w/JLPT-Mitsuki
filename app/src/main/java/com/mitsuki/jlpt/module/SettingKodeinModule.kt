@@ -3,8 +3,6 @@ package com.mitsuki.jlpt.module
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.mitsuki.jlpt.model.SettingModel
-import com.mitsuki.jlpt.model.SPRepository
-import com.mitsuki.jlpt.ui.adapter.SettingAdapter
 import com.mitsuki.jlpt.viewmodel.SettingViewModel
 import com.mitsuki.jlpt.viewmodel.SettingViewModelFactory
 import org.kodein.di.Kodein
