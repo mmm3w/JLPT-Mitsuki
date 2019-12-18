@@ -3,36 +3,32 @@ package com.mitsuki.jlpt.ui.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import com.mitsuki.jlpt.R
-import com.mitsuki.jlpt.ui.adapter.WordAdapter
-import com.mitsuki.jlpt.viewmodel.MainViewModel
-import kotlinx.android.synthetic.main.activity_main.*
-import org.kodein.di.generic.instance
 import androidx.recyclerview.widget.ItemTouchHelper
-import com.mitsuki.jlpt.app.*
-import com.mitsuki.jlpt.app.constants.Constants
+import com.mitsuki.jlpt.R
 import com.mitsuki.jlpt.app.constants.WORD_KIND
+import com.mitsuki.jlpt.app.getInt
 import com.mitsuki.jlpt.app.hint.showOperationResult
-import com.mitsuki.jlpt.app.hint.toastLong
 import com.mitsuki.jlpt.app.hint.toastShort
 import com.mitsuki.jlpt.app.kind.Kind
 import com.mitsuki.jlpt.app.kind.getKind
+import com.mitsuki.jlpt.app.putInt
 import com.mitsuki.jlpt.app.tts.SpeakUtils
-import com.mitsuki.jlpt.ui.widget.smoothscroll.SmoothScrollLayoutManager
-import com.mitsuki.jlpt.app.tts.Speaker
-import com.mitsuki.jlpt.app.tts.TTSFactory
 import com.mitsuki.jlpt.base.BaseActivity
 import com.mitsuki.jlpt.module.mainKodeinModule
+import com.mitsuki.jlpt.ui.adapter.WordAdapter
+import com.mitsuki.jlpt.ui.widget.MainToolbarController
 import com.mitsuki.jlpt.ui.widget.SwipeDeleteEvent
+import com.mitsuki.jlpt.ui.widget.smoothscroll.SmoothScrollLayoutManager
 import com.mitsuki.jlpt.viewmodel.MainEvent
+import com.mitsuki.jlpt.viewmodel.MainViewModel
 import com.uber.autodispose.autoDisposable
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import org.kodein.di.newInstance
+import kotlinx.android.synthetic.main.activity_main.*
+import org.kodein.di.generic.instance
 
 class MainActivity : BaseActivity<MainViewModel>() {
 
@@ -42,6 +38,8 @@ class MainActivity : BaseActivity<MainViewModel>() {
     private val mAdapter: WordAdapter by instance()
     private val itemTouchHelper: ItemTouchHelper by instance()
     private val swipeDeleteEvent: SwipeDeleteEvent by instance()
+
+    private val toolbarController by lazy { MainToolbarController(toolbar) }
 
     override fun initView(savedInstanceState: Bundle?) = R.layout.activity_main
 
@@ -85,6 +83,8 @@ class MainActivity : BaseActivity<MainViewModel>() {
         wordList.layoutManager = SmoothScrollLayoutManager(this)
         wordList.adapter = mAdapter
 
+        wordList.addOnScrollListener(toolbarController)
+
         swipeDeleteEvent.onSwipe.observeOn(Schedulers.io()).autoDisposable(scopeProvider)
             .subscribe { viewModel.changeWordState(it, mAdapter.getItemForOut(it)) }
 
@@ -101,8 +101,9 @@ class MainActivity : BaseActivity<MainViewModel>() {
     private fun onViewModelEvent(event: MainEvent) {
         when (event) {
             MainEvent.SHOW_SNACKBAR -> showSnackbar()
-//            MainEvent.SCROLL_TO_TOP -> wordList.smoothScrollToPosition(0) //TODO:有bug，暂时禁用
-            MainEvent.EXPAND_APP_BAR -> appBar.setExpanded(true)
+            //            MainEvent.SCROLL_TO_TOP -> wordList.smoothScrollToPosition(0) //TODO:有bug，暂时禁用
+            MainEvent.EXPAND_APP_BAR -> {
+            }
             MainEvent.NEW_WORD_VERSION -> toastShort { "有新版本单词" }
         }
     }
