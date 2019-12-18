@@ -3,6 +3,7 @@ package com.mitsuki.jlpt.module
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.mitsuki.jlpt.model.TestingModel
+import com.mitsuki.jlpt.ui.adapter.TestingAdapter
 import com.mitsuki.jlpt.viewmodel.TestingViewModel
 import com.mitsuki.jlpt.viewmodel.TestingViewModelFactory
 import org.kodein.di.Kodein

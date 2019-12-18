@@ -23,7 +23,6 @@ class MainToolbarController(private val toolbar: Toolbar) : RecyclerView.OnScrol
     }
 
     private fun onViewScroll(y: Int) {
-        Log.e("asdf", y.toString())
         if (y > 0) {
             if (expendTag) return
             expendTag = true

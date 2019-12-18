@@ -21,7 +21,7 @@ open class Setting(
         fun create(type: Int, desc: String = "", ext: Any? = null): Setting {
             return when (type) {
                 SETTING_TTS_ALL -> Setting(
-                    type = type, name = "TTS设置", description = "TTS方式选择、TTS设置、TTS发声示例"
+                    type = type, name = "TTS设置", description = "TTS方式选择、TTS详细设置、TTS发声示例"
                 )
                 SETTING_UPDATE_WORD -> Setting(
                     type = type, name = "更新词表", description = "联网更新所有单词表"
