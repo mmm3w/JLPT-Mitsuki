@@ -7,7 +7,8 @@ import com.mitsuki.jlpt.entity.Word
 class TestingModel(
     private val db: MyDataBase, private val spRepository: SPRepository
 ) : BaseModel() {
-//    fun obtainInitialData(): MutableList<Word> {
-//        return db.wordDao()
-//    }
+    fun obtainInitialData(): List<Word> {
+
+        return db.wordDao().queryRandomWords(5, 10)
+    }
 }
