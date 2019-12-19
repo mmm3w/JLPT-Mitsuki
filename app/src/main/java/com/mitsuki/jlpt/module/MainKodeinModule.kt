@@ -38,9 +38,5 @@ val mainKodeinModule = Kodein.Module(MAIN_MODULE_TAG) {
             .setPrefetchDistance(10).setEnablePlaceholders(false).build()
     }
 
-    //ItemTouchHelper
     bind<SwipeDeleteEvent>() with scoped<FragmentActivity>(AndroidLifecycleScope).singleton { SwipeDeleteEvent() }
-    bind<ItemTouchHelper>() with scoped<FragmentActivity>(AndroidLifecycleScope).singleton {
-        ItemTouchHelper(instance())
-    }
 }

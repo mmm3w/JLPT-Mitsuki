@@ -2,6 +2,7 @@ package com.mitsuki.jlpt.module
 
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import com.mitsuki.jlpt.entity.Word
 import com.mitsuki.jlpt.model.TestingModel
 import com.mitsuki.jlpt.ui.adapter.TestingAdapter
 import com.mitsuki.jlpt.viewmodel.TestingViewModel
@@ -18,7 +19,7 @@ const val TESTING_MODULE_TAG = "TESTING_MODULE_TAG"
 val testingKodeinModule = Kodein.Module(TESTING_MODULE_TAG) {
     //Model
     bind<TestingModel>() with scoped<FragmentActivity>(AndroidLifecycleScope).singleton {
-        TestingModel()
+        TestingModel(db = instance(), spRepository = instance())
     }
 
     //ViewModel
@@ -27,4 +28,7 @@ val testingKodeinModule = Kodein.Module(TESTING_MODULE_TAG) {
             context.viewModelStore, TestingViewModelFactory(model = instance())
         ).get(TestingViewModel::class.java)
     }
+
+    //适配器
+    bind<TestingAdapter>() with scoped<FragmentActivity>(AndroidLifecycleScope).singleton { TestingAdapter() }
 }

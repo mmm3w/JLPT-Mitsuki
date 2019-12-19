@@ -7,13 +7,9 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.mitsuki.jlpt.R
-import com.mitsuki.jlpt.app.constants.WORD_KIND
-import com.mitsuki.jlpt.app.getInt
 import com.mitsuki.jlpt.app.hint.showOperationResult
 import com.mitsuki.jlpt.app.hint.toastShort
 import com.mitsuki.jlpt.app.kind.Kind
-import com.mitsuki.jlpt.app.kind.getKind
-import com.mitsuki.jlpt.app.putInt
 import com.mitsuki.jlpt.app.tts.SpeakUtils
 import com.mitsuki.jlpt.base.BaseActivity
 import com.mitsuki.jlpt.module.mainKodeinModule
@@ -33,10 +29,9 @@ import org.kodein.di.generic.instance
 class MainActivity : BaseActivity<MainViewModel>() {
 
     override val kodeinModule = mainKodeinModule
-
     override val viewModel: MainViewModel by instance()
+
     private val mAdapter: WordAdapter by instance()
-    private val itemTouchHelper: ItemTouchHelper by instance()
     private val swipeDeleteEvent: SwipeDeleteEvent by instance()
 
     private val toolbarController by lazy { MainToolbarController(toolbar) }
@@ -46,65 +41,54 @@ class MainActivity : BaseActivity<MainViewModel>() {
     override fun initData(savedInstanceState: Bundle?) {
         initToolbar()
         initComponent()
+        initSubscription()
 
-        switchMode(getInt(WORD_KIND, Integer.MIN_VALUE))
-
+        viewModel.switchMode(0, isInitial = true)
         viewModel.checkWordVersion()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            R.id.nav_all -> switchMode(Kind.ALL)
-            R.id.nav_n1 -> switchMode(Kind.N1)
-            R.id.nav_n2 -> switchMode(Kind.N2)
-            R.id.nav_n3 -> switchMode(Kind.N3)
-            R.id.nav_n4 -> switchMode(Kind.N4)
-            R.id.nav_n5 -> switchMode(Kind.N5)
-            R.id.nav_invisible -> switchMode(Kind.INVISIBLE)
-            R.id.nav_numeral -> startActivity(Intent(this, NumeralActivity::class.java))
-            R.id.nav_test -> startActivity(Intent(this, TestingActivity::class.java))
-            R.id.nav_setting -> startActivity(Intent(this, SettingActivity::class.java))
-        }
-        return false
-    }
-
+    /**********************************************************************************************/
     private fun initToolbar() {
         setSupportActionBar(toolbar)
     }
 
     @SuppressLint("CheckResult")
     private fun initComponent() {
-        itemTouchHelper.attachToRecyclerView(wordList)
+        ItemTouchHelper(swipeDeleteEvent).attachToRecyclerView(wordList)
         wordList.layoutManager = SmoothScrollLayoutManager(this)
         wordList.adapter = mAdapter
-
         wordList.addOnScrollListener(toolbarController)
+    }
 
+    private fun initSubscription() {
+        //滑动删除
         swipeDeleteEvent.onSwipe.observeOn(Schedulers.io()).autoDisposable(scopeProvider)
             .subscribe { viewModel.changeWordState(it, mAdapter.getItemForOut(it)) }
-
+        //tts
         mAdapter.parentSubject.autoDisposable(scopeProvider)
             .subscribe { SpeakUtils.speak(this, it.cn, it.kana) { toastShort { it } } }
-
+        //数据加载
         viewModel.observeData().autoDisposable(scopeProvider)
             .subscribe { mAdapter.submitList(it) { viewModel.checkListStatus() } }
-
+        //viewModel其他事件
         viewModel.observeEvent().observeOn(AndroidSchedulers.mainThread())
             .autoDisposable(scopeProvider).subscribe(this::onViewModelEvent)
     }
 
-    private fun onViewModelEvent(event: MainEvent) {
-        when (event) {
-            MainEvent.SHOW_SNACKBAR -> showSnackbar()
-            //            MainEvent.SCROLL_TO_TOP -> wordList.smoothScrollToPosition(0) //TODO:有bug，暂时禁用
-            MainEvent.EXPAND_APP_BAR -> {
+    /**********************************************************************************************/
+    @Suppress("NON_EXHAUSTIVE_WHEN")
+    private fun onViewModelEvent(event: MainViewModel.ViewState) {
+        event.kind?.apply {
+            title = getTitle()
+            mAdapter.setListMode(getMode() != Kind.INVISIBLE)
+        }
+
+        event.normalEvent?.apply {
+            when (this) {
+                //MainEvent.SCROLL_TO_TOP -> wordList.smoothScrollToPosition(0) //TODO:有bug，暂时禁用
+                MainEvent.SHOW_SNACKBAR -> showSnackbar()
+                MainEvent.NEW_WORD_VERSION -> toastShort { "有新版本单词" }
             }
-            MainEvent.NEW_WORD_VERSION -> toastShort { "有新版本单词" }
         }
     }
 
@@ -113,15 +97,25 @@ class MainActivity : BaseActivity<MainViewModel>() {
             .subscribe { viewModel.undoOperation() }
     }
 
-    private fun switchMode(order: Int) {
-        getKind(order).let {
-            if (it.getMode() >= 0) {
-                putInt(WORD_KIND, it.getMode())
-                title = it.getTitle()
-                mAdapter.setListMode(it.getMode() != Kind.INVISIBLE)
-            }
-            viewModel.switchMode(it.getMode())
-        }
+    /**********************************************************************************************/
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.nav_all -> viewModel.switchMode(Kind.ALL)
+            R.id.nav_n1 -> viewModel.switchMode(Kind.N1)
+            R.id.nav_n2 -> viewModel.switchMode(Kind.N2)
+            R.id.nav_n3 -> viewModel.switchMode(Kind.N3)
+            R.id.nav_n4 -> viewModel.switchMode(Kind.N4)
+            R.id.nav_n5 -> viewModel.switchMode(Kind.N5)
+            R.id.nav_invisible -> viewModel.switchMode(Kind.INVISIBLE)
+            R.id.nav_numeral -> startActivity(Intent(this, NumeralActivity::class.java))
+            R.id.nav_test -> startActivity(Intent(this, TestingActivity::class.java))
+            R.id.nav_setting -> startActivity(Intent(this, SettingActivity::class.java))
+        }
+        return false
+    }
 }

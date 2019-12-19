@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 
 import java.util.ArrayList
 
-abstract class BaseAdapter<B, T : RecyclerView.ViewHolder> :
+abstract class BaseAdapter<B, T : RecyclerView.ViewHolder>(data: MutableList<B>? = null) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val VIEW_TYPE_EMPTY = Integer.MIN_VALUE
 
-    private var mData: MutableList<B> = ArrayList()
+    protected var mData: MutableList<B> = data ?: ArrayList()
     private var emptyLayout: Int = -1
     private var useEmpty = false
 

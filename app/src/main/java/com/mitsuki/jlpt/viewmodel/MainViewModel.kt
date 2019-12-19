@@ -1,10 +1,9 @@
 package com.mitsuki.jlpt.viewmodel
 
 import android.annotation.SuppressLint
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagedList
 import com.mitsuki.jlpt.app.kind.Kind
+import com.mitsuki.jlpt.app.kind.KindMode
 import com.mitsuki.jlpt.base.BaseViewModel
 import com.mitsuki.jlpt.entity.Word
 import com.mitsuki.jlpt.entity.WordState
@@ -12,77 +11,96 @@ import com.mitsuki.jlpt.model.MainModel
 import com.uber.autodispose.autoDisposable
 import io.reactivex.Flowable
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.processors.BehaviorProcessor
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 
+@Suppress("MoveSuspiciousCallableReferenceIntoParentheses")
 @SuppressLint("CheckResult")
 class MainViewModel(private val model: MainModel) : BaseViewModel() {
     private val dataProcessor: BehaviorProcessor<PagedList<Word>> = BehaviorProcessor.create()
-    private val eventSubject:PublishSubject<MainEvent> = PublishSubject.create()
+    private val eventSubject: PublishSubject<ViewState> = PublishSubject.create()
+
     private var undoCache: WordState? = null
     private var disposable: Disposable? = null
-    private var mode = 0
 
+    private var wordKind = Kind.getKind(model.obtainWordKind())
     private var snackBol = false
     private var lastModify = 0
 
     fun observeData(): Flowable<PagedList<Word>> = dataProcessor.hide()
 
-    fun observeEvent(): Observable<MainEvent> = eventSubject.hide()
+    fun observeEvent(): Observable<ViewState> = eventSubject.hide()
 
-    fun switchMode(mode: Int) {
+    //切换词库
+    fun switchMode(mode: Int, isInitial: Boolean = false) {
         this.lastModify = -1
-        this.mode = mode
-        disposable?.dispose()
-        disposable = when (mode) {
-            Kind.ALL -> model.fetchAllWord().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
-            Kind.N1 -> model.fetchWord(mode).autoDisposable(this).subscribe { dataProcessor.onNext(it) }
-            Kind.N2 -> model.fetchWord(mode).autoDisposable(this).subscribe { dataProcessor.onNext(it) }
-            Kind.N3 -> model.fetchWord(mode).autoDisposable(this).subscribe { dataProcessor.onNext(it) }
-            Kind.N4 -> model.fetchWord(mode).autoDisposable(this).subscribe { dataProcessor.onNext(it) }
-            Kind.N5 -> model.fetchWord(mode).autoDisposable(this).subscribe { dataProcessor.onNext(it) }
-            Kind.INVISIBLE -> model.fetchWordWithInvisible().autoDisposable(this).subscribe { dataProcessor.onNext(it) }
-            else -> null
+
+        if (!isInitial) {
+            wordKind = Kind.getKind(mode)
+        }
+
+        with(wordKind) {
+            disposable?.dispose()
+            disposable = when (getMode()) {
+                Kind.ALL -> onPushData(model.fetchAllWord())
+                Kind.N1 -> onPushData(model.fetchWord(getMode()))
+                Kind.N2 -> onPushData(model.fetchWord(getMode()))
+                Kind.N3 -> onPushData(model.fetchWord(getMode()))
+                Kind.N4 -> onPushData(model.fetchWord(getMode()))
+                Kind.N5 -> onPushData(model.fetchWord(getMode()))
+                Kind.INVISIBLE -> onPushData(model.fetchWordWithInvisible())
+                else -> null
+            }
+            if (getMode() >= 0) {
+                model.updateWordKind(getMode())
+                eventSubject.onNext(ViewState(kind = this))
+            }
         }
     }
 
-    fun changeWordState(position:Int,word: Word?) {
+    //改变单词可见状态
+    fun changeWordState(position: Int, word: Word?) {
         snackBol = true
         lastModify = position
         word?.also {
-            val s = WordState(it.id, fav = false, visible = mode == Kind.INVISIBLE)
+            val s = WordState(it.id, fav = false, visible = wordKind.getMode() == Kind.INVISIBLE)
             model.modifyWordState(s)
             undoCache = s
             undoCache?.visible = !s.visible
         }
     }
 
+    //撤销操作
     fun undoOperation() {
         undoCache?.also { model.modifyWordState(it) }
     }
 
-    fun checkListStatus(){
-        if (snackBol){
+    //数据加载完后的操作
+    fun checkListStatus() {
+        if (snackBol) {
+            //隐藏单词更新列表后需要显示snack bar
             snackBol = false
-            eventSubject.onNext(MainEvent.SHOW_SNACKBAR)
-        }else{
-            eventSubject.onNext(MainEvent.EXPAND_APP_BAR)
-            if (lastModify == 0) eventSubject.onNext(MainEvent.SCROLL_TO_TOP)
+            eventSubject.onNext(ViewState(normalEvent = MainEvent.SHOW_SNACKBAR))
+        } else {
+            //撤销第一个item的删除时更新列表需要回到顶部
+            if (lastModify == 0) eventSubject.onNext(ViewState(normalEvent = MainEvent.SCROLL_TO_TOP))
         }
     }
 
-    fun checkWordVersion(){
-        model.requestVersion().filter { it!=-1 }.autoDisposable(this)
-            .subscribe {
-                eventSubject.onNext(MainEvent.NEW_WORD_VERSION)
-            }
+    //检查更新
+    fun checkWordVersion() {
+        model.requestVersion().filter { it != -1 }.autoDisposable(this)
+            .subscribe { eventSubject.onNext(ViewState(MainEvent.NEW_WORD_VERSION)) }
     }
+
+    data class ViewState(val normalEvent: MainEvent? = null, val kind: KindMode? = null)
+
+    private fun onPushData(flowable: Flowable<PagedList<Word>>) =
+        flowable.autoDisposable(this).subscribe { dataProcessor.onNext(it) }
 }
 
-enum class MainEvent{
-    SHOW_SNACKBAR, SCROLL_TO_TOP, EXPAND_APP_BAR, NEW_WORD_VERSION
+enum class MainEvent {
+    SHOW_SNACKBAR, SCROLL_TO_TOP, NEW_WORD_VERSION
 }
 

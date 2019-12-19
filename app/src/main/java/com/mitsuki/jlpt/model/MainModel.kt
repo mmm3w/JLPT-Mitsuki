@@ -61,6 +61,12 @@ class MainModel(
         return temp
     }
 
+    fun obtainWordKind() = spRepository.wordKind
+
+    fun updateWordKind(mode: Int) {
+        spRepository.wordKind = mode
+    }
+
     @SuppressLint("CheckResult")
     fun requestVersion(): Observable<Int> {
         return Observable.create<Int> { emitter ->

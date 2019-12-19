@@ -21,11 +21,15 @@ class TestingAdapter : BaseAdapter<Word, TestingAdapter.MyViewHolder>() {
         t.numberView.text = i.toString()
     }
 
-    override fun getItemCount(): Int {
-        return 4
-    }
-
     inner class MyViewHolder(view: View) : AutoDisposeViewHolder(view) {
         val numberView: TextView = itemView.findViewById(R.id.number)
+    }
+
+    fun add(data: Word) {
+        mData.add(data)
+    }
+
+    fun remove(index: Int) {
+        mData.removeAt(index)
     }
 }
