@@ -1,9 +1,7 @@
 package com.mitsuki.jlpt.ui.adapter
 
 import android.annotation.SuppressLint
-import android.text.TextUtils
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -18,7 +16,7 @@ class WordAdapter : PagedListAdapter<Word, WordAdapter.MyViewHolder>(diffCallbac
 
     val parentSubject: PublishSubject<Word> = PublishSubject.create()
 
-    private var markImgRes = R.drawable.ic_visibility_off_black_24dp
+    private var markImgRes = R.drawable.ic_visibility_off_fff_24dp
 
     companion object {
         private val diffCallback = object : DiffUtil.ItemCallback<Word>() {
@@ -57,7 +55,7 @@ class WordAdapter : PagedListAdapter<Word, WordAdapter.MyViewHolder>(diffCallbac
     }
 
     fun setListMode(visible :Boolean){
-        markImgRes = if (visible) R.drawable.ic_visibility_off_black_24dp else R.drawable.ic_visibility_black_24dp
+        markImgRes = if (visible) R.drawable.ic_visibility_off_fff_24dp else R.drawable.ic_visibility_fff_24dp
     }
 }
 

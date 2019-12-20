@@ -41,11 +41,11 @@ interface WordDao {
     fun queryWordsWithVisible(kind: Int): DataSource.Factory<Int, Word>
 
     @Query("SELECT * FROM word LEFT JOIN (SELECT sid,visible FROM WORD_STATE) ON sid=id WHERE (visible IS NULL OR visible=1) AND kind=:kind ORDER BY RANDOM() LIMIT :count")
-    fun queryRandomWordsWithVisible(kind: Int, count: Int): List<Word>
+    fun queryRandomWordsWithVisible(kind: Int, count: Int): MutableList<Word>
 
     @Query("SELECT * FROM word LEFT JOIN (SELECT sid,visible FROM WORD_STATE) ON sid=id WHERE visible=0 AND kind=:kind ORDER BY RANDOM() LIMIT :count")
-    fun queryRandomWordsWithInvisible(kind: Int, count: Int): List<Word>
+    fun queryRandomWordsWithInvisible(kind: Int, count: Int): MutableList<Word>
 
     @Query("SELECT * FROM word WHERE kind=:kind ORDER BY RANDOM() LIMIT :count")
-    fun queryRandomWords(kind: Int, count: Int): List<Word>
+    fun queryRandomWords(kind: Int, count: Int): MutableList<Word>
 }

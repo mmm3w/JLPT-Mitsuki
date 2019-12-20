@@ -4,17 +4,14 @@
 ##### 项目架构：mvvm+jetpack
 ##### 任务列表：
 - [x] MVVM + Kodein + Jetpack + autodispose 基础项目构建
-- [x] 基础界面以及交互完成
-- [x] N5单词表
-- [x] N4单词表
-- [x] N3单词表
-- [x] N2单词表
-- [x] N1单词表
+- [x] 基础界面交互
+- [x] N1 ~ N5单词表
 - [x] 数词/量词表
-- [ ] 单词小测验
+- [x] 单词小测验
 - [x] Android原生TTS
 - [ ] Google Translate TTS
-- [x] Setting Page
+- [x] 设置页面
 - [x] 单词数据更新
-- [ ] 图标等内容
+- [x] 图标等内容
+- [ ] Android 10 深色主题适配
 - [ ] ~语言国际化~
