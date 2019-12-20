@@ -7,6 +7,7 @@ import com.mitsuki.jlpt.model.TestingModel
 import com.uber.autodispose.autoDisposable
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 
@@ -50,7 +51,8 @@ class TestingViewModel(private val model: TestingModel) : BaseViewModel() {
         lastWordState = state
     }
 
-    fun getViewModelObservable(): Observable<TestingViewState> = subject.hide()
+    fun getViewModelObservable(): Observable<TestingViewState> =
+        subject.hide().observeOn(AndroidSchedulers.mainThread())
 
     data class TestingViewState(
         val initialData: MutableList<Word>? = null, val word: Word? = null

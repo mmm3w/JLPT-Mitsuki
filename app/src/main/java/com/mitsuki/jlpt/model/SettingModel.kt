@@ -3,6 +3,7 @@ package com.mitsuki.jlpt.model
 import android.annotation.SuppressLint
 import android.os.Message
 import android.util.Log
+import com.mitsuki.jlpt.app.SettingFactory
 import com.mitsuki.jlpt.app.SimpleRequest
 import com.mitsuki.jlpt.app.tts.TTSFactory
 import com.mitsuki.jlpt.base.BaseModel
@@ -18,7 +19,7 @@ class SettingModel(
     private val db: MyDataBase
 ) : BaseModel() {
     fun getSetting(): List<Setting> {
-        return Setting.createGroup()
+        return SettingFactory.topSettingList
     }
 
     @SuppressLint("CheckResult")

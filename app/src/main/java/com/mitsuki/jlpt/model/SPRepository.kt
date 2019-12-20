@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import com.mitsuki.jlpt.BuildConfig
 import com.mitsuki.jlpt.app.constants.*
 import com.mitsuki.jlpt.app.int
-import com.mitsuki.jlpt.app.kind.Kind
+import com.mitsuki.jlpt.app.kind.GenericKind
 import com.mitsuki.jlpt.app.tts.TTSFactory
 import com.mitsuki.jlpt.base.SingletonHolderSingleArg
 
@@ -20,13 +20,13 @@ class SPRepository private constructor(sp: SharedPreferences) {
     var tempWordVersion: Int by sp.int(WORD_VERSION_TEMP, BuildConfig.VERSION_CODE)
 
     //展示的词库
-    var wordKind: Int by sp.int(WORD_KIND, Kind.ALL)
+    var wordKind: Int by sp.int(WORD_KIND, GenericKind.ALL)
 
     //词库范围
-    var testingKindRange: Int by sp.int(TESTING_KIND_RANGE, Kind.ALL)
+    var testingKindRange: Int by sp.int(TESTING_KIND_RANGE, GenericKind.ALL)
 
     //词范围(全部，仅隐藏内容，仅不隐藏内容)
-    var testingDisplayRange: Int by sp.int(TESTING_DISPLAY_RANGE, Kind.TESTING_DISPLAY_ALL)
+    var testingDisplayRange: Int by sp.int(TESTING_DISPLAY_RANGE, GenericKind.TESTING_DISPLAY_ALL)
 
     companion object : SingletonHolderSingleArg<SPRepository, SharedPreferences>(::SPRepository)
 }

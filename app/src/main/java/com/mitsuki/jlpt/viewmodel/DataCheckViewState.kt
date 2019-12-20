@@ -1,6 +1,6 @@
 package com.mitsuki.jlpt.viewmodel
-import com.mitsuki.jlpt.app.kind.Kind
+import com.mitsuki.jlpt.app.kind.KindFactory
 
 data class DataCheckViewState(val kind: Int, val number: Int) {
-    fun getKindMode() = Kind.getKind(kind)
+    fun getKindMode() = KindFactory.getKind(kind)
 }

@@ -2,8 +2,8 @@ package com.mitsuki.jlpt.viewmodel
 
 import android.annotation.SuppressLint
 import androidx.paging.PagedList
-import com.mitsuki.jlpt.app.kind.Kind
-import com.mitsuki.jlpt.app.kind.KindMode
+import com.mitsuki.jlpt.app.kind.GenericKind
+import com.mitsuki.jlpt.app.kind.KindFactory
 import com.mitsuki.jlpt.base.BaseViewModel
 import com.mitsuki.jlpt.entity.Word
 import com.mitsuki.jlpt.entity.WordState
@@ -24,7 +24,7 @@ class MainViewModel(private val model: MainModel) : BaseViewModel() {
     private var undoCache: WordState? = null
     private var disposable: Disposable? = null
 
-    private var wordKind = Kind.getKind(model.obtainWordKind())
+    private var wordKind = KindFactory.getKind(model.obtainWordKind())
     private var snackBol = false
     private var lastModify = 0
 
@@ -37,23 +37,23 @@ class MainViewModel(private val model: MainModel) : BaseViewModel() {
         this.lastModify = -1
 
         if (!isInitial) {
-            wordKind = Kind.getKind(mode)
+            wordKind = KindFactory.getKind(mode)
         }
 
         with(wordKind) {
             disposable?.dispose()
-            disposable = when (getMode()) {
-                Kind.ALL -> onPushData(model.fetchAllWord())
-                Kind.N1 -> onPushData(model.fetchWord(getMode()))
-                Kind.N2 -> onPushData(model.fetchWord(getMode()))
-                Kind.N3 -> onPushData(model.fetchWord(getMode()))
-                Kind.N4 -> onPushData(model.fetchWord(getMode()))
-                Kind.N5 -> onPushData(model.fetchWord(getMode()))
-                Kind.INVISIBLE -> onPushData(model.fetchWordWithInvisible())
+            disposable = when (type) {
+                GenericKind.ALL -> onPushData(model.fetchAllWord())
+                GenericKind.N1 -> onPushData(model.fetchWord(type))
+                GenericKind.N2 -> onPushData(model.fetchWord(type))
+                GenericKind.N3 -> onPushData(model.fetchWord(type))
+                GenericKind.N4 -> onPushData(model.fetchWord(type))
+                GenericKind.N5 -> onPushData(model.fetchWord(type))
+                GenericKind.INVISIBLE -> onPushData(model.fetchWordWithInvisible())
                 else -> null
             }
-            if (getMode() >= 0) {
-                model.updateWordKind(getMode())
+            if (type >= 0) {
+                model.updateWordKind(type)
                 eventSubject.onNext(ViewState(kind = this))
             }
         }
@@ -64,7 +64,7 @@ class MainViewModel(private val model: MainModel) : BaseViewModel() {
         snackBol = true
         lastModify = position
         word?.also {
-            val s = WordState(it.id, fav = false, visible = wordKind.getMode() == Kind.INVISIBLE)
+            val s = WordState(it.id, fav = false, visible = wordKind.type == GenericKind.INVISIBLE)
             model.modifyWordState(s)
             undoCache = s
             undoCache?.visible = !s.visible
@@ -94,7 +94,7 @@ class MainViewModel(private val model: MainModel) : BaseViewModel() {
             .subscribe { eventSubject.onNext(ViewState(MainEvent.NEW_WORD_VERSION)) }
     }
 
-    data class ViewState(val normalEvent: MainEvent? = null, val kind: KindMode? = null)
+    data class ViewState(val normalEvent: MainEvent? = null, val kind: GenericKind? = null)
 
     private fun onPushData(flowable: Flowable<PagedList<Word>>) =
         flowable.autoDisposable(this).subscribe { dataProcessor.onNext(it) }

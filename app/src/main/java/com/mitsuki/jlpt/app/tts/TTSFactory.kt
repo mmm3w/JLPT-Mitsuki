@@ -9,6 +9,9 @@ object TTSFactory {
     const val NATIVE_STR = "Native TTS"
     const val GOOGLE_TRANSLATE_STR = "Google Translate TTS"
 
+    //目前只提供一种tts方式
+    val ttsList by lazy { arrayListOf(NATIVE_STR) }
+
     fun create(context: Context, kind: Int): Speaker {
         return when (kind) {
             NATIVE -> NativeTTS.createSpeaker(context)
@@ -16,10 +19,6 @@ object TTSFactory {
             else -> NativeTTS.createSpeaker(context)
         }
     }
-
-//    fun list() = arrayListOf(NATIVE_STR, GOOGLE_TRANSLATE_STR)
-    //目前只提供一种tts方式
-    fun list() = arrayListOf(NATIVE_STR)
 
     fun ttsStr(tts: Int): String {
         return when (tts) {

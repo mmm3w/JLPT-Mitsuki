@@ -1,6 +1,6 @@
 package com.mitsuki.jlpt.viewmodel
 
-import com.mitsuki.jlpt.app.kind.Kind
+import com.mitsuki.jlpt.app.kind.GenericKind
 import com.mitsuki.jlpt.base.BaseViewModel
 import com.mitsuki.jlpt.model.DataCheckModel
 import com.uber.autodispose.autoDisposable
@@ -19,13 +19,13 @@ class DataCheckViewModel(private val model: DataCheckModel) : BaseViewModel() {
         Completable.fromAction {}.observeOn(Schedulers.io()).autoDisposable(this)
             .subscribe {
                 subject.apply {
-                    onNext(DataCheckViewState(Kind.N1, model.getWordNumber(Kind.N1)))
-                    onNext(DataCheckViewState(Kind.N2, model.getWordNumber(Kind.N2)))
-                    onNext(DataCheckViewState(Kind.N3, model.getWordNumber(Kind.N3)))
-                    onNext(DataCheckViewState(Kind.N4, model.getWordNumber(Kind.N4)))
-                    onNext(DataCheckViewState(Kind.N5, model.getWordNumber(Kind.N5)))
-                    onNext(DataCheckViewState(Kind.NUMERAL, model.getWordNumber(Kind.NUMERAL)))
-                    onNext(DataCheckViewState(Kind.INVISIBLE, model.getInvisibleNumber()))
+                    onNext(DataCheckViewState(GenericKind.N1, model.getWordNumber(GenericKind.N1)))
+                    onNext(DataCheckViewState(GenericKind.N2, model.getWordNumber(GenericKind.N2)))
+                    onNext(DataCheckViewState(GenericKind.N3, model.getWordNumber(GenericKind.N3)))
+                    onNext(DataCheckViewState(GenericKind.N4, model.getWordNumber(GenericKind.N4)))
+                    onNext(DataCheckViewState(GenericKind.N5, model.getWordNumber(GenericKind.N5)))
+                    onNext(DataCheckViewState(GenericKind.NUMERAL, model.getWordNumber(GenericKind.NUMERAL)))
+                    onNext(DataCheckViewState(GenericKind.INVISIBLE, model.getInvisibleNumber()))
                 }
             }
     }

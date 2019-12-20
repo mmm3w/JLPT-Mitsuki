@@ -8,7 +8,7 @@ import android.os.Environment
 import android.util.Log
 import androidx.room.Room
 import com.mitsuki.jlpt.app.constants.Constants
-import com.mitsuki.jlpt.app.kind.Kind
+import com.mitsuki.jlpt.app.kind.GenericKind
 import com.mitsuki.jlpt.db.MyDataBase
 import com.mitsuki.jlpt.entity.NumeralSort
 import com.mitsuki.jlpt.entity.Word
@@ -44,28 +44,28 @@ object TempUtils {
                 cursor1.getString(cursor1.getColumnIndex("japanese")),
                 cursor1.getString(cursor1.getColumnIndex("chinese")),
                 cursor1.getString(cursor1.getColumnIndex("hiragana")),
-                Kind.N1
+                GenericKind.N1
             )
             list.add(w)
         }
 
         val cursor = jlpt.rawQuery("select * from words", arrayOf())
-        var kindNumber = Kind.N2
+        var kindNumber = GenericKind.N2
 
         while (cursor.moveToNext()) {
 
             if (list.size == 857) {
-                kindNumber = Kind.N2
+                kindNumber = GenericKind.N2
             }
             if (list.size == 2688) {
-                kindNumber = Kind.N3
+                kindNumber = GenericKind.N3
             }
 
             if (list.size == 4491) {
-                kindNumber = Kind.N4
+                kindNumber = GenericKind.N4
             }
             if (list.size == 5125) {
-                kindNumber = Kind.N5
+                kindNumber = GenericKind.N5
             }
 
             val w = Word(
@@ -109,7 +109,7 @@ object TempUtils {
                         tempSort = NumeralSort(0, line.replace("#", ""), numItem.size, 0, 0)
                     } else {
                         val s = line.split("|")
-                        val word = Word(0, s[2], s[0], s[1], Kind.NUMERAL)
+                        val word = Word(0, s[2], s[0], s[1], GenericKind.NUMERAL)
                         numItem.add(word)
                     }
                 }

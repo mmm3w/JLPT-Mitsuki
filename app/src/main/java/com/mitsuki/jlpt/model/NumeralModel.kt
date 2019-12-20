@@ -1,6 +1,7 @@
 package com.mitsuki.jlpt.model
 
-import com.mitsuki.jlpt.app.kind.Kind
+import com.mitsuki.jlpt.app.kind.GenericKind
+import com.mitsuki.jlpt.app.kind.KindFactory
 import com.mitsuki.jlpt.base.BaseModel
 import com.mitsuki.jlpt.db.MyDataBase
 import com.mitsuki.jlpt.entity.NumeralSort
@@ -12,6 +13,6 @@ class NumeralModel(private val db: MyDataBase) :BaseModel(){
     }
 
     fun getNumeralDetail(start:Int, total:Int):List<Word>{
-        return db.wordDao().queryNumeralDetail(start, total, Kind.NUMERAL)
+        return db.wordDao().queryNumeralDetail(start, total, GenericKind.NUMERAL)
     }
 }

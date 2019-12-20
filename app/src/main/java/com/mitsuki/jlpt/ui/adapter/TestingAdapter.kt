@@ -40,7 +40,7 @@ class TestingAdapter : BaseAdapter<Word, TestingAdapter.MyViewHolder>() {
                             t.stateView.text = "${getItem(i).jp}\n${getItem(i).kana}"
                         }
                         t.stateLayout.visibility = View.VISIBLE
-                        WordState(getItem(i).id, fav = false, visible = t.stateView.isChecked)
+                        WordState(getItem(i).id, fav = false, visible = !t.stateView.isChecked)
                     }
                 }
             }

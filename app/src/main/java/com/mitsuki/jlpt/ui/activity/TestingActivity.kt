@@ -10,7 +10,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.mitsuki.jlpt.R
-import com.mitsuki.jlpt.app.kind.Kind
+import com.mitsuki.jlpt.app.kind.KindFactory
 import com.mitsuki.jlpt.app.tts.TTSFactory
 import com.mitsuki.jlpt.base.BaseActivity
 import com.mitsuki.jlpt.entity.Word
@@ -53,7 +53,7 @@ class TestingActivity : BaseActivity<TestingViewModel>() {
     /**********************************************************************************************/
     private fun initToolbar() {
         setSupportActionBar(toolbar)
-        title = "小测试"
+        title = "单词测试"
     }
 
     private fun initComponent() {
@@ -66,8 +66,8 @@ class TestingActivity : BaseActivity<TestingViewModel>() {
 
     private fun initSubscription() {
         itemTouchCallback.observable().autoDisposable(scopeProvider).subscribe(this::onSwipeEvent)
-        viewModel.getViewModelObservable().observeOn(AndroidSchedulers.mainThread())
-            .autoDisposable(scopeProvider).subscribe(this::onViewStateEvent)
+        viewModel.getViewModelObservable().autoDisposable(scopeProvider)
+            .subscribe(this::onViewStateEvent)
     }
 
     /**********************************************************************************************/
@@ -108,7 +108,7 @@ class TestingActivity : BaseActivity<TestingViewModel>() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-//            R.id.testing_setting -> startActivity(Intent(this, SettingActivity::class.java))
+            R.id.testing_setting -> startActivity(Intent(this, TestingSettingActivity::class.java))
         }
         return false
     }

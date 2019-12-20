@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import com.mitsuki.jlpt.R
 import com.mitsuki.jlpt.app.hint.showOperationResult
 import com.mitsuki.jlpt.app.hint.toastShort
-import com.mitsuki.jlpt.app.kind.Kind
+import com.mitsuki.jlpt.app.kind.GenericKind
 import com.mitsuki.jlpt.app.tts.SpeakUtils
 import com.mitsuki.jlpt.base.BaseActivity
 import com.mitsuki.jlpt.module.mainKodeinModule
@@ -79,8 +79,8 @@ class MainActivity : BaseActivity<MainViewModel>() {
     @Suppress("NON_EXHAUSTIVE_WHEN")
     private fun onViewModelEvent(event: MainViewModel.ViewState) {
         event.kind?.apply {
-            title = getTitle()
-            mAdapter.setListMode(getMode() != Kind.INVISIBLE)
+            title = name
+            mAdapter.setListMode(type != GenericKind.INVISIBLE)
         }
 
         event.normalEvent?.apply {
@@ -105,13 +105,13 @@ class MainActivity : BaseActivity<MainViewModel>() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.nav_all -> viewModel.switchMode(Kind.ALL)
-            R.id.nav_n1 -> viewModel.switchMode(Kind.N1)
-            R.id.nav_n2 -> viewModel.switchMode(Kind.N2)
-            R.id.nav_n3 -> viewModel.switchMode(Kind.N3)
-            R.id.nav_n4 -> viewModel.switchMode(Kind.N4)
-            R.id.nav_n5 -> viewModel.switchMode(Kind.N5)
-            R.id.nav_invisible -> viewModel.switchMode(Kind.INVISIBLE)
+            R.id.nav_all -> viewModel.switchMode(GenericKind.ALL)
+            R.id.nav_n1 -> viewModel.switchMode(GenericKind.N1)
+            R.id.nav_n2 -> viewModel.switchMode(GenericKind.N2)
+            R.id.nav_n3 -> viewModel.switchMode(GenericKind.N3)
+            R.id.nav_n4 -> viewModel.switchMode(GenericKind.N4)
+            R.id.nav_n5 -> viewModel.switchMode(GenericKind.N5)
+            R.id.nav_invisible -> viewModel.switchMode(GenericKind.INVISIBLE)
             R.id.nav_numeral -> startActivity(Intent(this, NumeralActivity::class.java))
             R.id.nav_test -> startActivity(Intent(this, TestingActivity::class.java))
             R.id.nav_setting -> startActivity(Intent(this, SettingActivity::class.java))

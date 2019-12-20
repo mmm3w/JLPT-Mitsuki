@@ -27,3 +27,9 @@ class TTSSettingViewModelFactory(private val model: TTSSettingModel) : ViewModel
 class TestingViewModelFactory(private val model: TestingModel) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T = TestingViewModel(model) as T
 }
+
+class TestingSettingViewModelFactory(private val model: TestingSettingModel) :
+    ViewModelProvider.Factory {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T =
+        TestingSettingViewModel(model) as T
+}
