@@ -25,6 +25,9 @@ object SettingFactory {
             Setting.SETTING_TESTING_DISPLAY -> Setting(
                 type = type, name = "是否包含隐藏单词", description = desc, ext = ext
             )
+            Setting.SETTING_TESTING_JUDGE -> Setting(
+                type = type, name = "答案仅限假名", ext = ext
+            )
             else -> Setting()
         }
     }

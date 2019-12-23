@@ -46,4 +46,6 @@ class TestingModel(
     fun saveWordState(state: WordState) {
         db.stateDao().insert(state)
     }
+
+    fun obtainJudgeTag() = spRepository.testingJudgeRange
 }

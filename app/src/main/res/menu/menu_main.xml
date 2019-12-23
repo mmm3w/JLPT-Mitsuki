@@ -26,7 +26,7 @@
         android:title="数词/量词" />
     <item
         android:id="@+id/nav_test"
-        android:title="测试" />
+        android:title="单词测试" />
     <item
         android:id="@+id/nav_setting"
         android:title="设置" />

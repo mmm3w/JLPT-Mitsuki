@@ -15,6 +15,8 @@ class TestingAdapter : BaseAdapter<Word, TestingAdapter.MyViewHolder>() {
 
     var confirmEvent: ((() -> WordState) -> Unit)? = null
 
+    var judgeTag = false
+
     override fun onMyCreateViewHolder(parent: ViewGroup, i: Int): MyViewHolder = MyViewHolder(
         LayoutInflater.from(parent.context).inflate(
             R.layout.item_testing, parent, false
@@ -31,8 +33,9 @@ class TestingAdapter : BaseAdapter<Word, TestingAdapter.MyViewHolder>() {
                 if (t.stateLayout.visibility == View.GONE) {
                     confirmEvent?.invoke {
                         t.answerView.clearFocus()
-                        if (t.answerView.text.toString() == getItem(i).jp
-                            || t.answerView.text.toString() == getItem(i).kana) {
+                        t.itemView.context
+                        if (t.answerView.text.toString() == getItem(i).kana
+                            || (!judgeTag && t.answerView.text.toString() == getItem(i).jp)) {
                             t.stateView.isChecked = true
                             t.stateView.text = ""
                         } else {

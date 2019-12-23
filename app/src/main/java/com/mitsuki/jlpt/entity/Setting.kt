@@ -19,5 +19,6 @@ open class Setting(
 
         const val SETTING_TESTING_KIND = 0x0401
         const val SETTING_TESTING_DISPLAY = 0x0402
+        const val SETTING_TESTING_JUDGE = 0x0403
     }
 }

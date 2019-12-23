@@ -23,7 +23,11 @@ class TestingViewModel(private val model: TestingModel) : BaseViewModel() {
     //自动获取一定量的单词
     fun initTestData() {
         Completable.fromAction {}.observeOn(Schedulers.io()).autoDisposable(this).subscribe {
-            subject.onNext(TestingViewState(initialData = model.obtainInitialData()))
+            subject.onNext(
+                TestingViewState(
+                    initialData = model.obtainInitialData(), judgeTag = model.obtainJudgeTag()
+                )
+            )
         }
     }
 
@@ -55,6 +59,8 @@ class TestingViewModel(private val model: TestingModel) : BaseViewModel() {
         subject.hide().observeOn(AndroidSchedulers.mainThread())
 
     data class TestingViewState(
-        val initialData: MutableList<Word>? = null, val word: Word? = null
+        val initialData: MutableList<Word>? = null,
+        val word: Word? = null,
+        val judgeTag: Boolean = false
     )
 }

@@ -41,6 +41,10 @@ class SwipeCardLayoutManager : RecyclerView.LayoutManager() {
                 child.scaleY = 1 - SwipeConfig.SCALE_GAP * level
                 child.translationY =
                     getDecoratedMeasuredHeight(child) * SwipeConfig.SCALE_GAP * level / 2 + SwipeConfig.TRANS_Y_GAP * level
+            } else {
+                child.scaleX = 1F
+                child.scaleY = 1F
+                child.translationY = 0F
             }
         }
 

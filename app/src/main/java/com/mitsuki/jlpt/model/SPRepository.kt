@@ -2,6 +2,7 @@ package com.mitsuki.jlpt.model
 
 import android.content.SharedPreferences
 import com.mitsuki.jlpt.BuildConfig
+import com.mitsuki.jlpt.app.boolean
 import com.mitsuki.jlpt.app.constants.*
 import com.mitsuki.jlpt.app.int
 import com.mitsuki.jlpt.app.kind.GenericKind
@@ -27,6 +28,9 @@ class SPRepository private constructor(sp: SharedPreferences) {
 
     //词范围(全部，仅隐藏内容，仅不隐藏内容)
     var testingDisplayRange: Int by sp.int(TESTING_DISPLAY_RANGE, GenericKind.TESTING_DISPLAY_ALL)
+
+    //是否仅对假名进行判断
+    var testingJudgeRange: Boolean by sp.boolean(TESTING_JUDGE_RANGE, false)
 
     companion object : SingletonHolderSingleArg<SPRepository, SharedPreferences>(::SPRepository)
 }

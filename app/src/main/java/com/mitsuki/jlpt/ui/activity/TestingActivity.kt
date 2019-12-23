@@ -46,7 +46,10 @@ class TestingActivity : BaseActivity<TestingViewModel>() {
         initToolbar()
         initComponent()
         initSubscription()
+    }
 
+    override fun onResume() {
+        super.onResume()
         viewModel.initTestData()
     }
 
@@ -73,6 +76,7 @@ class TestingActivity : BaseActivity<TestingViewModel>() {
     /**********************************************************************************************/
     private fun onViewStateEvent(viewState: TestingViewModel.TestingViewState) {
         viewState.initialData?.apply {
+            mAdapter.judgeTag = viewState.judgeTag
             mAdapter.addAll(this)
             mAdapter.notifyDataSetChanged()
         }

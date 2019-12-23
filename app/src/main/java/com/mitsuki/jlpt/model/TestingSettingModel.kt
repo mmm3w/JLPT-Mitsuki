@@ -11,6 +11,8 @@ class TestingSettingModel(private val spRepository: SPRepository) : BaseModel() 
             SettingFactory.create(type = Setting.SETTING_TESTING_KIND, desc = name, ext = this)
         }, KindFactory.getTestingDisplay(spRepository.testingDisplayRange).run {
             SettingFactory.create(type = Setting.SETTING_TESTING_DISPLAY, desc = name, ext = this)
+        }, spRepository.testingJudgeRange.run {
+            SettingFactory.create(type = Setting.SETTING_TESTING_JUDGE, ext = this)
         })
     }
 
@@ -20,6 +22,10 @@ class TestingSettingModel(private val spRepository: SPRepository) : BaseModel() 
 
     fun saveTestingDisplayRange(range: Int) {
         spRepository.testingDisplayRange = range
+    }
+
+    fun saveTestingJudgeRange(range: Boolean) {
+        spRepository.testingJudgeRange = range
     }
 
     fun obtainKindList() = KindFactory.kindList

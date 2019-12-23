@@ -16,9 +16,9 @@ data class GenericKind (val type:Int, val name:String)
         const val MEMORIES = -2
 
         //测试范围
-        const val TESTING_DISPLAY_ALL = 0
-        const val TESTING_DISPLAY_VISIBLE = 1
-        const val TESTING_DISPLAY_INVISIBLE = 2
+        const val TESTING_DISPLAY_ALL = 0x0500
+        const val TESTING_DISPLAY_VISIBLE = 0x0501
+        const val TESTING_DISPLAY_INVISIBLE = 0x0502
 
         /**********************************************************************************************/
         const val ALL_STR = "全部单词"
@@ -31,7 +31,7 @@ data class GenericKind (val type:Int, val name:String)
         const val NUMERAL_STR = "数词/量词"
         const val MEMORIES_STR = ""
 
-        const val TESTING_DISPLAY_ALL_STR = "全部单词"
+        const val TESTING_DISPLAY_ALL_STR = "隐藏及非隐藏单词"
         const val TESTING_DISPLAY_VISIBLE_STR = "仅限非隐藏单词"
         const val TESTING_DISPLAY_INVISIBLE_STR = "仅限隐藏单词"
     }

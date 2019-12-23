@@ -26,10 +26,7 @@ class TestingSettingViewModel(private val model: TestingSettingModel) : BaseView
                 selection = this.indexOf(KindFactory.type2Name(model.obtainSelectedDisplay())),
                 selectType = Setting.SETTING_TESTING_DISPLAY
             )
-        }
-
-        )
-
+        })
     }
 
     fun onKindSelectEvent() {
@@ -51,6 +48,11 @@ class TestingSettingViewModel(private val model: TestingSettingModel) : BaseView
                 KindFactory.name2Type(str)
             )
         }
+        getSetting()
+    }
+
+    fun onJudgeChange(switch: Boolean) {
+        model.saveTestingJudgeRange(!switch)
         getSetting()
     }
 
