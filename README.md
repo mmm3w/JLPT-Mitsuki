@@ -1,5 +1,7 @@
 ## JLPT单词小软件
 
+<a href='https://play.google.com/store/apps/details?id=com.mitsuki.jlpt&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='下载应用，请到 Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/zh-cn_badge_web_generic.png' height="50px"/></a>
+
 ##### 主要功能：包含N1~N5的单词以及常用的数词量词、单词发音、侧滑隐藏单词、单词小测验。
 ##### 项目架构：mvvm+jetpack
 ##### 任务列表：
